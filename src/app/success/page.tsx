@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function SuccessPage() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#635BFF] selection:text-white">
@@ -24,12 +26,12 @@ export default function SuccessPage() {
           Tu cuenta de Stripe está vinculada. Ya estamos listos para recuperar tus pagos.
         </p>
 
-        <a 
+        <Link 
           href="/dashboard" 
           className="bg-[#635BFF] hover:bg-[#544BD9] text-white font-medium text-lg py-4 px-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(99,91,255,0.3)] active:scale-[0.98] w-full sm:w-auto"
         >
           Ir a mi Panel de Control
-        </a>
+        </Link>
 
       </main>
     </div>
