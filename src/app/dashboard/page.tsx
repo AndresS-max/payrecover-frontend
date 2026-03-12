@@ -1,8 +1,13 @@
+"use client";
+import { useUser } from "@clerk/nextjs";
+
 export default function DashboardPage() {
+  const { user } = useUser();
+
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       <h1 className="text-3xl font-bold mb-8 tracking-tight text-white">
-        Visión General
+        Bienvenido, {user?.firstName} 👋
       </h1>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

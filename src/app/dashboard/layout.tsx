@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import { UserButton } from "@clerk/nextjs";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
@@ -44,6 +45,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <span>Configuración</span>
           </Link>
         </nav>
+
+        <div className="p-4 border-t border-zinc-900 mt-auto flex items-center justify-between">
+          <span className="text-sm font-medium text-zinc-400">Mi Cuenta</span>
+          <UserButton />
+        </div>
       </aside>
 
       {/* Main Content */}
