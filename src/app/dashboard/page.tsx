@@ -1,6 +1,13 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
 
+const mockRecoveries = [
+  { id: 1, client: "María López", amount: "$150", status: "Recuperado", date: "12 Mar 2026" },
+  { id: 2, client: "Juan Pérez", amount: "$89", status: "Reintentando", date: "11 Mar 2026" },
+  { id: 3, client: "Ana García", amount: "$299", status: "Fallido", date: "10 Mar 2026" },
+  { id: 4, client: "Carlos Ruiz", amount: "$45", status: "Recuperado", date: "09 Mar 2026" },
+];
+
 export default function DashboardPage() {
   const { user } = useUser();
 
@@ -60,17 +67,41 @@ export default function DashboardPage() {
         </div>
       </div>
       
-      {/* Empty State / Table Placeholder for the future */}
-      <div className="mt-10 bg-zinc-900/30 border border-zinc-800 rounded-2xl p-8 text-center border-dashed">
-        <div className="mx-auto w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mb-4">
-          <svg className="w-8 h-8 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-          </svg>
+      {/* Recent Recoveries Table */}
+      <div className="mt-10">
+        <h2 className="text-xl font-bold text-white mb-6">Historial de Transacciones</h2>
+        <div className="bg-zinc-900/50 rounded-2xl border border-zinc-800 overflow-hidden shadow-lg">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse min-w-[600px]">
+              <thead>
+                <tr className="bg-zinc-900/80 border-b border-zinc-800 text-zinc-400 text-sm font-medium">
+                  <th className="p-4 whitespace-nowrap">Cliente</th>
+                  <th className="p-4 whitespace-nowrap">Monto</th>
+                  <th className="p-4 whitespace-nowrap">Estado</th>
+                  <th className="p-4 whitespace-nowrap">Fecha</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800/60">
+                {mockRecoveries.map((recovery) => (
+                  <tr key={recovery.id} className="hover:bg-zinc-800/30 transition-colors">
+                    <td className="p-4 text-white font-medium whitespace-nowrap">{recovery.client}</td>
+                    <td className="p-4 text-zinc-300 whitespace-nowrap">{recovery.amount}</td>
+                    <td className="p-4 whitespace-nowrap">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
+                        recovery.status === 'Recuperado' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                        recovery.status === 'Reintentando' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
+                        'bg-red-500/10 text-red-500 border-red-500/20'
+                      }`}>
+                        {recovery.status}
+                      </span>
+                    </td>
+                    <td className="p-4 text-zinc-500 whitespace-nowrap">{recovery.date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <h3 className="text-lg font-medium text-white mb-2">Historial de Transacciones</h3>
-        <p className="text-zinc-500 max-w-sm mx-auto">
-          Pronto verás aquí la lista detallada de todos los pagos recuperados automáticamente.
-        </p>
       </div>
     </div>
   );
