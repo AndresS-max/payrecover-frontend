@@ -1,4 +1,30 @@
+"use client";
+import { useState } from "react";
+
 export default function LandingPage() {
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  const handleConnect = async () => {
+    try {
+      setIsConnecting(true);
+      const response = await fetch("https://payrecover.onrender.com/api/connect", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: "prueba@payrecover.com" }),
+      });
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error("Error connecting to Stripe:", error);
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#635BFF] selection:text-white">
       <main className="text-center max-w-4xl flex flex-col items-center w-full">
@@ -11,10 +37,12 @@ export default function LandingPage() {
         </p>
 
         <button
+          onClick={handleConnect}
+          disabled={isConnecting}
           type="button"
-          className="bg-[#635BFF] hover:bg-[#544BD9] text-white font-medium text-lg sm:text-xl py-4 flex items-center justify-center px-10 rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(99,91,255,0.3)] active:scale-[0.98]"
+          className="bg-[#635BFF] hover:bg-[#544BD9] disabled:opacity-75 disabled:hover:scale-100 disabled:cursor-not-allowed text-white font-medium text-lg sm:text-xl py-4 flex items-center justify-center px-10 rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(99,91,255,0.3)] active:scale-[0.98]"
         >
-          Conectar con Stripe
+          {isConnecting ? "Conectando..." : "Conectar con Stripe"}
         </button>
       </main>
     </div>
