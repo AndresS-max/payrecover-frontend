@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </Link>
           
           <Link 
-            href="/dashboard/recoveries" 
+            href="/dashboard/recuperaciones" 
             className="flex items-center space-x-3 px-4 py-3 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </Link>
           
           <Link 
-            href="/dashboard/settings" 
+            href="/dashboard/configuracion" 
             className="flex items-center space-x-3 px-4 py-3 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
