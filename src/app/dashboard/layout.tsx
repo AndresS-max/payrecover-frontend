@@ -12,10 +12,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             PayRecover
           </h2>
         </div>
-        
+
         <nav className="flex-1 p-4 space-y-2">
-          <Link 
-            href="/dashboard" 
+          <Link
+            href="/dashboard"
             className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-zinc-900/50 text-[#635BFF] font-medium transition-colors border border-zinc-800/50"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -23,9 +23,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </svg>
             <span>Inicio</span>
           </Link>
-          
-          <Link 
-            href="/dashboard/recuperaciones" 
+
+          <Link
+            href="/dashboard/recuperaciones"
             className="flex items-center space-x-3 px-4 py-3 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -33,9 +33,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </svg>
             <span>Recuperaciones</span>
           </Link>
-          
-          <Link 
-            href="/dashboard/configuracion" 
+
+          <Link
+            href="/dashboard/configuracion"
             className="flex items-center space-x-3 px-4 py-3 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

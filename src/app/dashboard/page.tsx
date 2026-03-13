@@ -1,8 +1,27 @@
-"use client";
-import { useUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
+import { supabase } from "@/lib/supabase";
 
-export default function DashboardPage() {
-  const { user } = useUser();
+export default async function DashboardPage() {
+  const user = await currentUser();
+
+  // Consulta 1: Dinero Recuperado
+  const { data: recuperadoData, error: recuperadoError } = await supabase
+    .from("failed_invoices")
+    .select("amount_due")
+    .eq("status", "recuperada");
+
+  let totalRecuperado = 0;
+  if (!recuperadoError && recuperadoData) {
+    totalRecuperado = recuperadoData.reduce((sum, invoice) => sum + (invoice.amount_due || 0), 0);
+  }
+
+  // Consulta 2: Pagos Fallidos Activos
+  const { count: activosCount, error: activosError } = await supabase
+    .from("failed_invoices")
+    .select("*", { count: "exact", head: true })
+    .neq("status", "recuperada");
+
+  const pagosActivos = activosError ? 0 : (activosCount || 0);
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -22,7 +41,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className="text-3xl font-bold text-white">$1,250</span>
+            <span className="text-3xl font-bold text-white">${totalRecuperado}</span>
             <span className="text-sm text-green-500 font-medium">+12% este mes</span>
           </div>
         </div>
@@ -38,7 +57,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className="text-3xl font-bold text-white">12</span>
+            <span className="text-3xl font-bold text-white">{pagosActivos}</span>
             <span className="text-sm text-zinc-500 font-medium">requieren atención</span>
           </div>
         </div>
