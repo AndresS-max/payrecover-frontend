@@ -12,8 +12,11 @@ export default async function DashboardPage() {
 
   let totalRecuperado = 0;
   if (!recuperadoError && recuperadoData) {
-    totalRecuperado = recuperadoData.reduce((sum, invoice) => sum + (invoice.amount_due || 0), 0);
+    totalRecuperado = recuperadoData.reduce((sum: number, invoice: any) => sum + (invoice.amount_due || 0), 0);
   }
+
+  const comisionesPendientes = totalRecuperado * 0.15;
+  const porcentajeProgreso = Math.min((comisionesPendientes / 50) * 100, 100);
 
   // Consulta 2: Pagos Fallidos Activos
   const { count: activosCount, error: activosError } = await supabase
@@ -29,7 +32,7 @@ export default async function DashboardPage() {
         Bienvenido, {user?.firstName} 👋
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Card 1 */}
         <div className="bg-zinc-900/50 p-6 rounded-2xl border border-zinc-800 shadow-lg hover:border-[#635BFF]/30 hover:bg-zinc-900 transition-all duration-300">
           <div className="flex items-center justify-between mb-4">
@@ -75,6 +78,29 @@ export default async function DashboardPage() {
           <div className="flex items-baseline space-x-2">
             <span className="text-3xl font-bold text-white">85%</span>
             <span className="text-sm text-green-500 font-medium">muy buena</span>
+          </div>
+        </div>
+        {/* Card 4 */}
+        <div className="bg-zinc-900/50 p-6 rounded-2xl border border-zinc-800 shadow-lg hover:border-[#635BFF]/30 hover:bg-zinc-900 transition-all duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-zinc-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis">Comisiones Pendientes</h3>
+            <div className="p-2 bg-[#635BFF]/10 rounded-lg flex-shrink-0">
+              <svg className="w-5 h-5 text-[#635BFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col space-y-1">
+            <span className="text-3xl font-bold text-white">${comisionesPendientes.toFixed(2)}</span>
+            <div className="w-full h-2 bg-zinc-800 rounded-full mt-3">
+              <div
+                className="h-full bg-[#635BFF] rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${porcentajeProgreso}%` }}
+              ></div>
+            </div>
+            <p className="text-[10px] text-zinc-500 mt-2 leading-tight">
+              Se factura automáticamente al llegar a $50
+            </p>
           </div>
         </div>
       </div>

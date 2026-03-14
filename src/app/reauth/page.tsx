@@ -4,7 +4,7 @@ export default function ReauthPage() {
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4">
       <div className="max-w-md w-full text-center bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-xl animate-in fade-in zoom-in duration-500">
-        
+
         {/* Warning Icon */}
         <div className="w-20 h-20 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-yellow-500/20 shadow-[0_0_30px_rgba(234,179,8,0.15)]">
           <svg
@@ -21,7 +21,7 @@ export default function ReauthPage() {
         <h1 className="text-3xl font-bold text-white mb-4 tracking-tight">
           Conexión Interrumpida
         </h1>
-        
+
         <p className="text-zinc-400 mb-8 leading-relaxed">
           El proceso de conexión con Stripe fue cancelado o el enlace expiró por seguridad. No te preocupes, puedes volver a generarlo.
         </p>
