@@ -1,114 +1,116 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 export default function OnboardingPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
-  const [loading, setLoading] = useState(false);
 
-  const handleConnect = async () => {
+  const handleConnectStripe = async () => {
+    setIsLoading(true);
+    console.log("Iniciando conexión con backend...");
+
     try {
-      setLoading(true);
-      const response = await fetch("https://payrecover.onrender.com/api/connect", {
+      const response = await fetch("http://localhost:8080/api/connect", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          userId: user?.id,
-          email: user?.primaryEmailAddress?.emailAddress,
-        }),
+        body: JSON.stringify({ email: user?.primaryEmailAddress?.emailAddress }),
       });
 
+      if (!response.ok) {
+        throw new Error("Error obteniendo la URL de Stripe Connect");
+      }
+
       const data = await response.json();
+
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert("Ocurrió un error: No se recibió la URL de Stripe.");
+        throw new Error("El servidor no retornó una URL válida");
       }
     } catch (error) {
-      console.error("Error connecting to Stripe:", error);
-      alert("Ocurrió un error al intentar conectar con el servidor.");
-    } finally {
-      setLoading(false);
+      console.error("Error al conectar con Stripe:", error);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 min-h-[80vh] flex items-center justify-center p-4">
-      <div className="max-w-3xl w-full bg-zinc-950">
-        
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
-            Conecta tu cuenta de pagos
-          </h1>
-          <p className="text-lg text-zinc-400 max-w-xl mx-auto">
-            Para automatizar la recuperación de tus facturas, necesitamos conectarnos con tu cuenta de Stripe.
-          </p>
-        </div>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto mt-12">
+      <div className="bg-zinc-900/50 p-8 md:p-12 rounded-3xl border border-zinc-800 shadow-2xl text-center relative overflow-hidden">
+        {/* Decorative background element */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-32 bg-[#635BFF]/20 blur-[80px] rounded-full pointer-events-none"></div>
 
-        {/* How it works Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {/* Step 1 */}
-          <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 rounded-full bg-[#635BFF]/10 flex items-center justify-center mb-4">
-              <svg className="w-8 h-8 text-[#635BFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">1. Autorización</h3>
-            <p className="text-zinc-500 text-sm">
-              Te redirigiremos de forma segura a Stripe.
-            </p>
-          </div>
-
-          {/* Step 2 */}
-          <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 rounded-full bg-[#635BFF]/10 flex items-center justify-center mb-4">
-              <svg className="w-8 h-8 text-[#635BFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">2. Conexión</h3>
-            <p className="text-zinc-500 text-sm">
-              PayRecover obtendrá permisos solo de lectura para detectar pagos fallidos.
-            </p>
-          </div>
-
-          {/* Step 3 */}
-          <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 rounded-full bg-[#635BFF]/10 flex items-center justify-center mb-4">
-              <svg className="w-8 h-8 text-[#635BFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">3. Automatización</h3>
-            <p className="text-zinc-500 text-sm">
-              Empezaremos a recuperar tu dinero en piloto automático.
-            </p>
-          </div>
-        </div>
-
-        {/* Action Container */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 md:p-12 text-center shadow-xl">
-          <button 
-            onClick={handleConnect}
-            disabled={loading}
-            className={`bg-[#635BFF] hover:bg-[#544BD9] text-white font-semibold text-lg py-4 px-8 rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,91,255,0.4)] active:scale-[0.98] inline-flex items-center space-x-3 w-full md:w-auto overflow-hidden ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
-          >
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              {/* Using a generic connector icon as a stand-in for stripe */}
-              <path d="M11.996 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zM8.385 17.653c-1.39 0-2.518-1.127-2.518-2.518 0-1.39 1.128-2.518 2.518-2.518 1.39 0 2.518 1.128 2.518 2.518 0 1.39-1.128 2.518-2.518 2.518zm0-6.19c-1.39 0-2.518-1.128-2.518-2.518 0-1.39 1.128-2.518 2.518-2.518 1.39 0 2.518 1.128 2.518 2.518 0 1.39-1.128 2.518-2.518 2.518zm7.23 6.19c-1.39 0-2.518-1.127-2.518-2.518 0-1.39 1.128-2.518 2.518-2.518 1.39 0 2.518 1.128 2.518 2.518 0 1.39-1.128 2.518-2.518 2.518zm0-6.19c-1.39 0-2.518-1.128-2.518-2.518 0-1.39 1.128-2.518 2.518-2.518 1.39 0 2.518 1.128 2.518 2.518 0 1.39-1.128 2.518-2.518 2.518z" />
+        <div className="relative z-10 flex flex-col items-center">
+          {/* Icon Header */}
+          <div className="w-20 h-20 bg-[#635BFF]/10 rounded-2xl flex items-center justify-center mb-6 border border-[#635BFF]/20 shadow-[0_0_30px_rgba(99,91,255,0.15)]">
+            <svg
+              className="w-10 h-10 text-[#635BFF]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+              />
             </svg>
-            <span>{loading ? "Redirigiendo a Stripe..." : "Conectar con Stripe"}</span>
+          </div>
+
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+            Conecta tu cuenta de Stripe
+          </h1>
+
+          <p className="text-zinc-400 mb-10 text-lg leading-relaxed max-w-lg">
+            Dunnify necesita tu autorización para rastrear e identificar facturas fallidas.
+            Esta conexión nos permite automatizar el proceso de recuperación de forma <span className="text-white font-medium">100% segura</span> y transparente.
+          </p>
+
+          <button
+            onClick={handleConnectStripe}
+            disabled={isLoading}
+            className={`
+              w-full md:w-auto relative group flex items-center justify-center space-x-3 
+              bg-[#635BFF] hover:bg-[#544BD9] text-white font-semibold py-4 px-10 rounded-xl 
+              transition-all duration-300 shadow-[0_0_20px_rgba(99,91,255,0.3)] 
+              hover:shadow-[0_0_40px_rgba(99,91,255,0.5)] active:scale-[0.98]
+              ${isLoading ? "opacity-90 cursor-not-allowed" : ""}
+            `}
+          >
+            {isLoading ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Conectando...</span>
+              </>
+            ) : (
+              <>
+                <span>Autorizar conexión con Stripe</span>
+                <svg
+                  className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </>
+            )}
           </button>
-          <p className="text-zinc-500 text-sm mt-6 flex items-center justify-center gap-2">
-            <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+          <p className="text-sm text-zinc-500 flex items-center mt-6">
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            Cifrado de grado bancario (AES-256)
+            Conexión encriptada de extremo a extremo
           </p>
         </div>
       </div>

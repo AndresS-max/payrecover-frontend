@@ -41,7 +41,7 @@ export default async function DashboardPage() {
         <h1 className="text-3xl font-bold tracking-tight text-white">
           Bienvenido, {user?.firstName} 👋
         </h1>
-        <Link 
+        <Link
           href="/dashboard/onboarding"
           className="bg-[#635BFF] hover:bg-[#544BD9] text-white font-medium py-2.5 px-6 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(99,91,255,0.2)] hover:shadow-[0_0_30px_rgba(99,91,255,0.4)] active:scale-[0.98] flex items-center space-x-2 border border-[#635BFF]/50"
         >
