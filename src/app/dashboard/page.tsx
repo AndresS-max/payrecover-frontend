@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { supabase } from "@/lib/supabase";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -9,6 +10,10 @@ export default async function DashboardPage() {
     .from("failed_invoices")
     .select("amount_due")
     .eq("status", "recuperada");
+
+  if (recuperadoError) {
+    console.error("Error al obtener dinero recuperado:", recuperadoError);
+  }
 
   let totalRecuperado = 0;
   if (!recuperadoError && recuperadoData) {
@@ -24,13 +29,28 @@ export default async function DashboardPage() {
     .select("*", { count: "exact", head: true })
     .neq("status", "recuperada");
 
+  if (activosError) {
+    console.error("Error al obtener pagos activos:", activosError);
+  }
+
   const pagosActivos = activosError ? 0 : (activosCount || 0);
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <h1 className="text-3xl font-bold mb-8 tracking-tight text-white">
-        Bienvenido, {user?.firstName} 👋
-      </h1>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+        <h1 className="text-3xl font-bold tracking-tight text-white">
+          Bienvenido, {user?.firstName} 👋
+        </h1>
+        <Link 
+          href="/dashboard/onboarding"
+          className="bg-[#635BFF] hover:bg-[#544BD9] text-white font-medium py-2.5 px-6 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(99,91,255,0.2)] hover:shadow-[0_0_30px_rgba(99,91,255,0.4)] active:scale-[0.98] flex items-center space-x-2 border border-[#635BFF]/50"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </svg>
+          <span>Conectar cuenta de Stripe</span>
+        </Link>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Card 1 */}
