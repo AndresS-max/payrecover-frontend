@@ -19,7 +19,7 @@ export default async function DashboardPage() {
   let totalRecuperadoCents = 0;
   if (!recuperadoError && recuperadoData) {
     totalRecuperadoCents = recuperadoData.reduce(
-      (sum: number, invoice: any) => sum + (invoice.amount_due || 0),
+      (sum: number, invoice: { amount_due: number }) => sum + (invoice.amount_due || 0),
       0
     );
   }

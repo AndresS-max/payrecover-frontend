@@ -39,6 +39,7 @@ export async function GET() {
   const toDollars = (cents: number | null): string =>
     cents != null ? (cents / 100).toFixed(2) : '';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rows = (data || []).map((inv: any) =>
     [
       csvVal(inv.id),

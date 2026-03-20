@@ -1,0 +1,13 @@
+﻿
+> payrecover-frontend@0.1.0 lint
+> eslint
+
+
+C:\Users\paulo\OneDrive\Desktop\Payrecovery\payrecover-frontend-remote\src\app\api\export\route.ts
+  42:39  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\paulo\OneDrive\Desktop\Payrecovery\payrecover-frontend-remote\src\app\dashboard\page.tsx
+  22:30  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Ô£û 2 problems (2 errors, 0 warnings)
+
