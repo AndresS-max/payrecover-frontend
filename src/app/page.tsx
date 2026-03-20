@@ -7,12 +7,12 @@ export default function LandingPage() {
   const handleConnect = async () => {
     try {
       setIsConnecting(true);
-      const response = await fetch("https://payrecover.onrender.com/api/connect", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/connect`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: "prueba@payrecover.com" }),
+        body: JSON.stringify({ email: "prueba@dunnify.net" }),
       });
       const data = await response.json();
       if (data.url) {
@@ -29,7 +29,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#635BFF] selection:text-white">
       <main className="text-center max-w-4xl flex flex-col items-center w-full">
         <h1 className="text-6xl sm:text-7xl md:text-8xl font-extrabold mb-6 tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white to-zinc-500">
-          PayRecover
+          Dunnify
         </h1>
 
         <p className="text-xl sm:text-2xl text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed font-light">

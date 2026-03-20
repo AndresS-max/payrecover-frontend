@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <aside className="w-64 bg-black border-r border-zinc-900 flex flex-col">
         <div className="p-6 border-b border-zinc-900">
           <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-zinc-400">
-            PayRecover
+            Dunnify
           </h2>
         </div>
 

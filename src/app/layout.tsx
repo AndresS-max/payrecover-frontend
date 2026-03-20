@@ -7,8 +7,8 @@ import { dark } from "@clerk/themes";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PayRecover",
-  description: "Recupera tus pagos fallidos",
+  title: "Dunnify",
+  description: "Recupera tus pagos fallidos en piloto automático",
 };
 
 export default function RootLayout({
