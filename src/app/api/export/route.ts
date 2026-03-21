@@ -1,7 +1,17 @@
 import { supabase } from '@/lib/supabase';
 import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 
 export async function GET() {
+  // ── Authentication check ─────────────────────────────────────────────────
+  // This route is NOT covered by middleware.ts (which only guards /dashboard/*)
+  // So we must check auth manually here.
+  const { userId } = await auth();
+  if (!userId) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  // ── Query Supabase ────────────────────────────────────────────────────────
   const { data, error } = await supabase
     .from('failed_invoices')
     .select(
@@ -13,6 +23,7 @@ export async function GET() {
     return NextResponse.json({ error: 'Error generando el reporte' }, { status: 500 });
   }
 
+  // ── Build CSV ─────────────────────────────────────────────────────────────
   const headers = [
     'ID',
     'Invoice Stripe',
