@@ -5,10 +5,9 @@ import Link from "next/link";
 export default async function DashboardPage() {
   const user = await currentUser();
 
-  // Consulta 1: Dinero Recuperado — status correcto: 'recovered' (backend escribe en inglés)
   const { data: recuperadoData, error: recuperadoError } = await supabase
     .from("failed_invoices")
-    .select("amount_due")
+    .select("amount_paid")
     .eq("status", "recovered");
 
   if (recuperadoError) {
@@ -19,12 +18,29 @@ export default async function DashboardPage() {
   let totalRecuperadoCents = 0;
   if (!recuperadoError && recuperadoData) {
     totalRecuperadoCents = recuperadoData.reduce(
-      (sum: number, invoice: { amount_due: number }) => sum + (invoice.amount_due || 0),
+      (sum: number, invoice: any) => sum + (invoice.amount_paid || 0),
       0
     );
   }
   const totalRecuperado = (totalRecuperadoCents / 100).toFixed(2);
-  const comisionesPendientes = (totalRecuperadoCents * 0.15 / 100).toFixed(2);
+  // Consulta 3: Comisiones reales calculadas por el backend
+  const { data: comisionesData, error: comisionesError } = await supabase
+    .from("failed_invoices")
+    .select("commission_amount")
+    .eq("status", "recovered");
+
+  if (comisionesError) {
+    console.error("Error al obtener comisiones:", comisionesError);
+  }
+
+  const totalComisionesCents = (!comisionesError && comisionesData)
+    ? comisionesData.reduce(
+        (sum: number, inv: any) => sum + (inv.commission_amount || 0),
+        0
+      )
+    : 0;
+
+  const comisionesPendientes = (totalComisionesCents / 100).toFixed(2);
 
   // Consulta 2: Pagos Fallidos Activos (pending)
   const { count: activosCount, error: activosError } = await supabase
