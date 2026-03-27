@@ -1,49 +1,96 @@
-"use client";
-import { useState } from "react";
+// @ts-expect-error — Clerk v7 RC type mismatch with React 19, resolved at runtime
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function LandingPage() {
-  const [isConnecting, setIsConnecting] = useState(false);
-
-  const handleConnect = async () => {
-    try {
-      setIsConnecting(true);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/connect`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: "prueba@dunnify.net" }),
-      });
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch (error) {
-      console.error("Error connecting to Stripe:", error);
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#635BFF] selection:text-white">
-      <main className="text-center max-w-4xl flex flex-col items-center w-full">
-        <h1 className="text-6xl sm:text-7xl md:text-8xl font-extrabold mb-6 tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white to-zinc-500">
-          Dunnify
+    <div className="min-h-screen bg-[#0F1B27] text-[#F2F2F2] flex flex-col items-center justify-center p-6 selection:bg-[#F2F2F2]/20 selection:text-white relative overflow-hidden">
+
+      {/* Grid de fondo */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(242,242,242,0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(242,242,242,0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: "72px 72px",
+        }}
+      />
+
+      {/* Glow central sutil */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(242,242,242,0.04) 0%, transparent 70%)" }}
+      />
+
+      {/* Badge */}
+      <div className="relative mb-10 flex items-center gap-2 bg-[#0D0D0D] border border-[#F2F2F2]/10 rounded-full px-5 py-2 text-sm text-[#BFAFAF]">
+        <span className="w-2 h-2 rounded-full bg-[#F2F2F2]/60 animate-pulse" />
+        Sistema activo en producción
+      </div>
+
+      <main className="relative text-center max-w-3xl flex flex-col items-center w-full gap-5">
+        {/* Título */}
+        <h1
+          className="text-7xl sm:text-8xl md:text-9xl font-extrabold tracking-tighter"
+          style={{
+            background: "linear-gradient(135deg, #F2F2F2 0%, #BFAFAF 60%, #D9D9D9 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Alynt AI
         </h1>
 
-        <p className="text-xl sm:text-2xl text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-          Recupera tus pagos fallidos en piloto automático y aumenta la retención de tus clientes.
+        <p className="text-lg sm:text-xl text-[#BFAFAF] max-w-xl leading-relaxed font-light">
+          Recupera tus pagos fallidos en piloto automático.<br />
+          Sin intervención manual. Sin perder clientes.
         </p>
 
-        <button
-          onClick={handleConnect}
-          disabled={isConnecting}
-          type="button"
-          className="bg-[#635BFF] hover:bg-[#544BD9] disabled:opacity-75 disabled:hover:scale-100 disabled:cursor-not-allowed text-white font-medium text-lg sm:text-xl py-4 flex items-center justify-center px-10 rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(99,91,255,0.3)] active:scale-[0.98]"
-        >
-          {isConnecting ? "Conectando..." : "Conectar con Stripe"}
-        </button>
+        {/* Stats */}
+        <div className="flex items-center gap-10 my-4">
+          {[
+            { value: "15%", label: "solo si recuperas" },
+            { value: "3", label: "emails automáticos" },
+            { value: "$0", label: "costo fijo" },
+          ].map(({ value, label }) => (
+            <div key={label} className="flex flex-col items-center gap-1">
+              <span className="text-2xl font-bold text-[#F2F2F2]">{value}</span>
+              <span className="text-xs text-[#BFAFAF]">{label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="w-32 h-px bg-[#F2F2F2]/10 my-1" />
+
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-3 mt-2">
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button
+                type="button"
+                className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_30px_rgba(242,242,242,0.15)]"
+              >
+                Entrar con Google →
+              </button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <Link
+              href="/dashboard"
+              className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Ir al dashboard →
+            </Link>
+          </SignedIn>
+        </div>
+
+        <p className="text-xs text-[#BFAFAF]/50 mt-1">
+          Sin tarjeta de crédito. Pagas solo cuando recuperas.
+        </p>
       </main>
     </div>
   );
