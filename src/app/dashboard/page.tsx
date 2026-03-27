@@ -68,7 +68,6 @@ export default async function DashboardPage() {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
         <div>
@@ -100,7 +99,7 @@ export default async function DashboardPage() {
             className="bg-[#0D0D0D]/60 p-6 rounded-2xl border border-[#F2F2F2]/[0.07] hover:border-[#F2F2F2]/15 hover:bg-[#0D0D0D]/80 transition-all duration-200 group"
           >
             <div className="flex items-start justify-between mb-5">
-              <p className="text-xs text-[#BFAFAF] font-medium uppercase tracking-wider leading-tight">
+              <p className="text-xs text-[#BFAFAF] font-medium uppercase tracking-wider">
                 {title}
               </p>
               <div className="p-1.5 rounded-lg bg-[#F2F2F2]/[0.06] group-hover:bg-[#F2F2F2]/10 transition-colors">

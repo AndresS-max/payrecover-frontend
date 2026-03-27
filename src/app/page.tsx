@@ -1,8 +1,10 @@
-// @ts-expect-error — Clerk v7 RC type mismatch with React 19, resolved at runtime
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const { userId } = await auth();
+
   return (
     <div className="min-h-screen bg-[#0F1B27] text-[#F2F2F2] flex flex-col items-center justify-center p-6 selection:bg-[#F2F2F2]/20 selection:text-white relative overflow-hidden">
 
@@ -31,7 +33,7 @@ export default function LandingPage() {
       </div>
 
       <main className="relative text-center max-w-3xl flex flex-col items-center w-full gap-5">
-        {/* Título */}
+        {/* Logo / nombre */}
         <h1
           className="text-7xl sm:text-8xl md:text-9xl font-extrabold tracking-tighter"
           style={{
@@ -63,11 +65,12 @@ export default function LandingPage() {
           ))}
         </div>
 
+        {/* Separador */}
         <div className="w-32 h-px bg-[#F2F2F2]/10 my-1" />
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 mt-2">
-          <SignedOut>
+          {!userId && (
             <SignInButton mode="modal">
               <button
                 type="button"
@@ -76,16 +79,16 @@ export default function LandingPage() {
                 Entrar con Google →
               </button>
             </SignInButton>
-          </SignedOut>
+          )}
 
-          <SignedIn>
+          {userId && (
             <Link
               href="/dashboard"
               className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               Ir al dashboard →
             </Link>
-          </SignedIn>
+          )}
         </div>
 
         <p className="text-xs text-[#BFAFAF]/50 mt-1">
