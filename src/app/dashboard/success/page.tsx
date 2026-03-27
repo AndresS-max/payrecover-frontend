@@ -16,12 +16,12 @@ export default function StripeConnectSuccessPage() {
         </h1>
         
         <p className="text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed">
-          Tu cuenta está lista. Dunnify ya puede empezar a rastrear y recuperar tus pagos fallidos de forma segura.
+          Tu cuenta está lista. Alynt AI ya puede empezar a rastrear y recuperar tus pagos fallidos de forma segura.
         </p>
         
         <Link 
           href="/dashboard"
-          className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-900"
+          className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-[#F2F2F2] transition-colors bg-[#0F1B27] rounded-lg hover:bg-[#0D0D0D] focus:outline-none focus:ring-2 focus:ring-[#0F1B27] focus:ring-offset-2 dark:focus:ring-offset-zinc-900"
         >
           Ir al panel principal
         </Link>
