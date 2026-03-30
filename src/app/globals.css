@@ -28,17 +28,46 @@
     color: #F2F2F2;
   }
 
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: #0D0D0D; }
-  ::-webkit-scrollbar-thumb { background: #1e2d3d; border-radius: 999px; }
-  ::-webkit-scrollbar-thumb:hover { background: #2a3f54; }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0D0D0D;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1e2d3d;
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2a3f54;
+  }
 }
 
 @layer utilities {
-  .font-nunito { font-family: var(--font-nunito), sans-serif; }
-  .text-primary { color: var(--color-primary); }
-  .text-muted { color: var(--color-muted); }
-  .bg-deep { background-color: var(--color-bg-deep); }
-  .border-subtle { border-color: rgba(242, 242, 242, 0.08); }
-  .glow-accent { box-shadow: 0 0 30px rgba(242, 242, 242, 0.06); }
+  .font-nunito {
+    font-family: var(--font-nunito), sans-serif;
+  }
+
+  .text-primary {
+    color: var(--color-primary);
+  }
+
+  .text-muted {
+    color: var(--color-muted);
+  }
+
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+  }
+
+  .border-subtle {
+    border-color: rgba(242, 242, 242, 0.08);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 30px rgba(242, 242, 242, 0.06);
+  }
 }

@@ -44,11 +44,10 @@ export default function SidebarNav() {
           <Link
             key={href}
             href={href}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
-              isActive
-                ? "bg-[#F2F2F2]/10 text-[#F2F2F2] border border-[#F2F2F2]/15"
-                : "text-[#BFAFAF] hover:text-[#F2F2F2] hover:bg-[#F2F2F2]/5 border border-transparent"
-            }`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${isActive
+              ? "bg-[#F2F2F2]/10 text-[#F2F2F2] border border-[#F2F2F2]/15"
+              : "text-[#BFAFAF] hover:text-[#F2F2F2] hover:bg-[#F2F2F2]/5 border border-transparent"
+              }`}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {icon}

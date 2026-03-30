@@ -9,7 +9,6 @@ export default function OnboardingPage() {
 
   const handleConnectStripe = async () => {
     setIsLoading(true);
-    console.log("Iniciando conexión con backend...");
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/connect`, {

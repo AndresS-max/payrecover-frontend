@@ -50,8 +50,23 @@ export async function GET() {
   const toDollars = (cents: number | null): string =>
     cents != null ? (cents / 100).toFixed(2) : '';
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const rows = (data || []).map((inv: any) =>
+  interface InvoiceRow {
+    id: number;
+    stripe_invoice_id: string | null;
+    stripe_customer_id: string | null;
+    stripe_account_id: string | null;
+    amount_due: number | null;
+    amount_paid: number | null;
+    commission_amount: number | null;
+    currency: string | null;
+    status: string | null;
+    created_at: string | null;
+    recovered_at: string | null;
+    commission_billed: boolean | null;
+    commission_billed_at: string | null;
+  }
+
+  const rows = ((data || []) as InvoiceRow[]).map((inv) =>
     [
       csvVal(inv.id),
       csvVal(inv.stripe_invoice_id),
