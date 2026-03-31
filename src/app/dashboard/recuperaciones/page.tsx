@@ -69,7 +69,7 @@ export default async function RecuperacionesPage() {
           {/* Nuevo Cliente */}
           <Link
             href="/dashboard/onboarding"
-            className="bg-[#635BFF] hover:bg-[#544BD9] text-white font-medium text-sm py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(99,91,255,0.3)] active:scale-[0.98] flex items-center space-x-2"
+            className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-medium text-sm py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(242,242,242,0.12)] active:scale-[0.98] flex items-center space-x-2"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

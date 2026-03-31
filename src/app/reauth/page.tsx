@@ -28,7 +28,7 @@ export default function ReauthPage() {
 
         <Link
           href="/dashboard/onboarding"
-          className="bg-[#635BFF] hover:bg-[#544BD9] text-white font-medium py-3 px-8 rounded-xl transition-all duration-300 hover:shadow-[0_0_20px_rgba(99,91,255,0.4)] active:scale-[0.98] inline-flex items-center space-x-2"
+          className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-medium py-3 px-8 rounded-xl transition-all duration-300 hover:shadow-[0_0_20px_rgba(242,242,242,0.15)] active:scale-[0.98] inline-flex items-center space-x-2"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

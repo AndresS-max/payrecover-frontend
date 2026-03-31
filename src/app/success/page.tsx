@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function SuccessPage() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#635BFF] selection:text-white">
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#F2F2F2] selection:text-[#0D0D0D]">
       <main className="text-center max-w-2xl flex flex-col items-center w-full bg-zinc-900/50 p-10 md:p-16 rounded-3xl border border-zinc-800 shadow-2xl backdrop-blur-sm animate-in fade-in zoom-in duration-500">
 
         {/* Animated Check Icon */}
@@ -28,7 +28,7 @@ export default function SuccessPage() {
 
         <Link
           href="/dashboard"
-          className="bg-[#635BFF] hover:bg-[#544BD9] text-white font-medium text-lg py-4 px-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(99,91,255,0.3)] active:scale-[0.98] w-full sm:w-auto"
+          className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-medium text-lg py-4 px-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(242,242,242,0.12)] active:scale-[0.98] w-full sm:w-auto"
         >
           Ir a mi Panel de Control
         </Link>
