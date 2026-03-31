@@ -80,7 +80,7 @@ export default function LandingPage() {
           ) : (
             <button
               type="button"
-              onClick={() => openSignIn({ afterSignInUrl: "/dashboard" })}
+              onClick={() => openSignIn({ fallbackRedirectUrl: "/dashboard" })}
               className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_30px_rgba(242,242,242,0.15)]"
             >
               Entrar con Google →
