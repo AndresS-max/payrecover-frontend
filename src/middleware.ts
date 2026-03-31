@@ -6,11 +6,16 @@ const isProtectedRoute = createRouteMatcher([
   '/api/export(.*)',
 ]);
 
+import { NextResponse } from 'next/server';
+
 export default clerkMiddleware(async (auth, request) => {
   if (isProtectedRoute(request)) {
     const session = await auth();
     if (!session.userId) {
-      return session.redirectToSignIn();
+      // Redirigir a la landing page en lugar del portal de Clerk
+      // para que usen el modal
+      const url = new URL('/', request.url);
+      return NextResponse.redirect(url);
     }
   }
 });
