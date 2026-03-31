@@ -3,7 +3,7 @@ import { useClerk, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function LandingPage() {
-  const { openSignIn } = useClerk();
+  const { openSignIn, signOut } = useClerk();
   const { isSignedIn } = useUser();
 
   return (
@@ -71,12 +71,21 @@ export default function LandingPage() {
         {/* CTA — sin SignedIn / SignedOut */}
         <div className="flex flex-col sm:flex-row gap-3 mt-2">
           {isSignedIn ? (
-            <Link
-              href="/dashboard"
-              className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              Ir al dashboard →
-            </Link>
+            <div className="flex flex-col items-center gap-3">
+              <Link
+                href="/dashboard"
+                className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] w-full max-w-xs"
+              >
+                Ir al dashboard →
+              </Link>
+              <button
+                onClick={() => signOut()}
+                className="text-xs text-[#BFAFAF] hover:text-white underline transition-colors"
+                title="Limpiar sesión local si ocurre un error"
+              >
+                Cerrar sesión (O limpiar error)
+              </button>
+            </div>
           ) : (
             <button
               type="button"

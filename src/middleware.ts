@@ -13,8 +13,9 @@ export default clerkMiddleware(async (auth, request) => {
     const session = await auth();
     if (!session.userId) {
       // Redirigir a la landing page en lugar del portal de Clerk
-      // para que usen el modal
+      // para que usen el modal y limpiar el cache si hay error
       const url = new URL('/', request.url);
+      url.searchParams.set('error', 'session_expired');
       return NextResponse.redirect(url);
     }
   }
