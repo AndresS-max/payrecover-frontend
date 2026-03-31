@@ -29,3 +29,19 @@ npm-debug.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# ── Archivos temporales de auditoría y agentes ──
+agent*_report.md
+audit_results.txt
+audit.ps1
+*_report.md
+SECURITY_FIXES_APPLIED.md
+lint_out.txt
+lint_output.txt
+tsc_errors*.txt
+build_output.txt
+errors.txt
+
+# ── Logs temporales ──
+*.log
+/tmp/
