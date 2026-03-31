@@ -1,10 +1,10 @@
 "use client";
-import { useClerk } from "@clerk/nextjs";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function LandingPage() {
   const { openSignIn } = useClerk();
+  const { isSignedIn } = useUser();
 
   return (
     <div className="min-h-screen bg-[#0F1B27] text-[#F2F2F2] flex flex-col items-center justify-center p-6 selection:bg-[#F2F2F2]/20 selection:text-white relative overflow-hidden">
@@ -34,6 +34,7 @@ export default function LandingPage() {
       </div>
 
       <main className="relative text-center max-w-3xl flex flex-col items-center w-full gap-5">
+
         <h1
           className="text-7xl sm:text-8xl md:text-9xl font-extrabold tracking-tighter"
           style={{
@@ -51,11 +52,12 @@ export default function LandingPage() {
           Sin intervención manual. Sin perder clientes.
         </p>
 
+        {/* Stats */}
         <div className="flex items-center gap-10 my-4">
           {[
             { value: "15%", label: "solo si recuperas" },
-            { value: "3", label: "emails automáticos" },
-            { value: "$0", label: "costo fijo" },
+            { value: "3",   label: "emails automáticos" },
+            { value: "$0",  label: "costo fijo" },
           ].map(({ value, label }) => (
             <div key={label} className="flex flex-col items-center gap-1">
               <span className="text-2xl font-bold text-[#F2F2F2]">{value}</span>
@@ -66,8 +68,16 @@ export default function LandingPage() {
 
         <div className="w-32 h-px bg-[#F2F2F2]/10 my-1" />
 
+        {/* CTA — sin SignedIn / SignedOut */}
         <div className="flex flex-col sm:flex-row gap-3 mt-2">
-          <SignedOut>
+          {isSignedIn ? (
+            <Link
+              href="/dashboard"
+              className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Ir al dashboard →
+            </Link>
+          ) : (
             <button
               type="button"
               onClick={() => openSignIn({ afterSignInUrl: "/dashboard" })}
@@ -75,16 +85,7 @@ export default function LandingPage() {
             >
               Entrar con Google →
             </button>
-          </SignedOut>
-
-          <SignedIn>
-            <Link
-              href="/dashboard"
-              className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              Ir al dashboard →
-            </Link>
-          </SignedIn>
+          )}
         </div>
 
         <p className="text-xs text-[#BFAFAF]/50 mt-1">
