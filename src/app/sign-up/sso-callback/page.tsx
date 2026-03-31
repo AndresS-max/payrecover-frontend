@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
-export default function SSOCallback() {
+export default function SSOCallbackSignUp() {
   const { handleRedirectCallback } = useClerk();
   const router = useRouter();
 
@@ -26,7 +26,7 @@ export default function SSOCallback() {
     <div className="min-h-screen bg-[#0F1B27] flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         <div className="w-8 h-8 border-2 border-[#F2F2F2]/20 border-t-[#F2F2F2] rounded-full animate-spin" />
-        <p className="text-[#BFAFAF] text-sm">Iniciando sesión...</p>
+        <p className="text-[#BFAFAF] text-sm">Creando cuenta...</p>
       </div>
     </div>
   );
