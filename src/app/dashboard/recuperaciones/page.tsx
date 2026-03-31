@@ -22,7 +22,7 @@ function StatusBadge({ status }: { status: string }) {
     },
     written_off: {
       label: "Incobrable",
-      classes: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
+      classes: "bg-[#BFAFAF]/10 text-[#BFAFAF] border-[#BFAFAF]/20",
     },
   };
   const s = map[status] ?? {
@@ -58,7 +58,7 @@ export default async function RecuperacionesPage() {
           <a
             href="/api/export"
             download
-            className="flex items-center space-x-2 text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 font-medium text-sm py-2 px-4 rounded-lg transition-all duration-300 active:scale-[0.98]"
+            className="flex items-center space-x-2 text-[#BFAFAF] hover:text-[#F2F2F2] border border-[#F2F2F2]/[0.07] hover:border-[#F2F2F2]/[0.15] font-medium text-sm py-2 px-4 rounded-lg transition-all duration-300 active:scale-[0.98]"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -80,11 +80,11 @@ export default async function RecuperacionesPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-zinc-900/50 rounded-2xl border border-zinc-800 overflow-hidden shadow-lg">
+      <div className="bg-[#0D0D0D]/60 rounded-2xl border border-[#F2F2F2]/[0.07] overflow-hidden shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[600px]">
             <thead>
-              <tr className="bg-zinc-900/80 border-b border-zinc-800 text-zinc-400 text-sm font-medium">
+              <tr className="bg-[#0D0D0D]/80 border-b border-[#F2F2F2]/[0.07] text-[#BFAFAF] text-sm font-medium">
                 <th className="p-4 whitespace-nowrap">Cliente</th>
                 <th className="p-4 whitespace-nowrap">Monto</th>
                 <th className="p-4 whitespace-nowrap">Estado</th>
@@ -94,7 +94,7 @@ export default async function RecuperacionesPage() {
             <tbody className="divide-y divide-zinc-800/60">
               {recuperaciones.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-zinc-500">
+                  <td colSpan={4} className="p-8 text-center text-[#BFAFAF]/70">
                     No hay recuperaciones registradas aún.
                   </td>
                 </tr>
@@ -110,7 +110,7 @@ export default async function RecuperacionesPage() {
                     <td className="p-4 whitespace-nowrap">
                       <StatusBadge status={recovery.status} />
                     </td>
-                    <td className="p-4 text-zinc-500 whitespace-nowrap">
+                    <td className="p-4 text-[#BFAFAF]/70 whitespace-nowrap">
                       {recovery.created_at
                         ? new Date(recovery.created_at).toLocaleDateString("es-GT")
                         : "Sin fecha"}

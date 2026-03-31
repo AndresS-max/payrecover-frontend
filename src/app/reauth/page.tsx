@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function ReauthPage() {
   return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full text-center bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-xl animate-in fade-in zoom-in duration-500">
+    <div className="min-h-screen bg-[#0F1B27] flex flex-col items-center justify-center p-4">
+      <div className="max-w-md w-full text-center bg-[#0D0D0D] border border-[#F2F2F2]/[0.07] p-8 rounded-3xl shadow-xl animate-in fade-in zoom-in duration-500">
 
         {/* Warning Icon */}
         <div className="w-20 h-20 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-yellow-500/20 shadow-[0_0_30px_rgba(234,179,8,0.15)]">
@@ -22,7 +22,7 @@ export default function ReauthPage() {
           Conexión Interrumpida
         </h1>
 
-        <p className="text-zinc-400 mb-8 leading-relaxed">
+        <p className="text-[#BFAFAF] mb-8 leading-relaxed">
           El proceso de conexión con Stripe fue cancelado o el enlace expiró por seguridad. No te preocupes, puedes volver a generarlo.
         </p>
 

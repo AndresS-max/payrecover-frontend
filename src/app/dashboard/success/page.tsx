@@ -4,7 +4,7 @@ import { CheckCircle } from "lucide-react";
 export default function StripeConnectSuccessPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
-      <div className="max-w-md w-full bg-white dark:bg-zinc-900 shadow-xl rounded-2xl p-8 text-center border border-zinc-100 dark:border-zinc-800">
+      <div className="max-w-md w-full bg-white dark:bg-[#0D0D0D] shadow-xl rounded-2xl p-8 text-center border border-zinc-100 dark:border-[#F2F2F2]/[0.07]">
         <div className="flex justify-center mb-6">
           <div className="bg-green-100 dark:bg-green-900/30 p-4 rounded-full">
             <CheckCircle className="w-16 h-16 text-green-500" strokeWidth={1.5} />
@@ -15,7 +15,7 @@ export default function StripeConnectSuccessPage() {
           ¡Cuenta de Stripe conectada con éxito!
         </h1>
         
-        <p className="text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed">
+        <p className="text-zinc-600 dark:text-[#BFAFAF] mb-8 leading-relaxed">
           Tu cuenta está lista. Alynt AI ya puede empezar a rastrear y recuperar tus pagos fallidos de forma segura.
         </p>
         

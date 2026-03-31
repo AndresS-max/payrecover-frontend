@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function SuccessPage() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#F2F2F2] selection:text-[#0D0D0D]">
-      <main className="text-center max-w-2xl flex flex-col items-center w-full bg-zinc-900/50 p-10 md:p-16 rounded-3xl border border-zinc-800 shadow-2xl backdrop-blur-sm animate-in fade-in zoom-in duration-500">
+    <div className="min-h-screen bg-[#0F1B27] text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#F2F2F2] selection:text-[#0D0D0D]">
+      <main className="text-center max-w-2xl flex flex-col items-center w-full bg-[#0D0D0D]/60 p-10 md:p-16 rounded-3xl border border-[#F2F2F2]/[0.07] shadow-2xl backdrop-blur-sm animate-in fade-in zoom-in duration-500">
 
         {/* Animated Check Icon */}
         <div className="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mb-8 border border-green-500/20 shadow-[0_0_50px_rgba(34,197,94,0.2)]">
@@ -22,7 +22,7 @@ export default function SuccessPage() {
           ¡Conexión Exitosa!
         </h1>
 
-        <p className="text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed font-light">
+        <p className="text-lg md:text-xl text-[#BFAFAF] mb-10 leading-relaxed font-light">
           Tu cuenta de Stripe está vinculada. Ya estamos listos para recuperar tus pagos.
         </p>
 

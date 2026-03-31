@@ -38,7 +38,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto mt-12">
-      <div className="bg-zinc-900/50 p-8 md:p-12 rounded-3xl border border-zinc-800 shadow-2xl text-center relative overflow-hidden">
+      <div className="bg-[#0D0D0D]/60 p-8 md:p-12 rounded-3xl border border-[#F2F2F2]/[0.07] shadow-2xl text-center relative overflow-hidden">
         {/* Decorative background element */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-32 bg-[#F2F2F2]/5 blur-[80px] rounded-full pointer-events-none"></div>
 
