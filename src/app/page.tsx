@@ -79,11 +79,24 @@ export default function LandingPage() {
                 Ir al dashboard →
               </Link>
               <button
-                onClick={() => signOut()}
+                onClick={async () => {
+                  try {
+                    await signOut();
+                  } catch (e) {
+                    console.error("Clerk signOut falló", e);
+                  } finally {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    document.cookie.split(";").forEach((c) => {
+                      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                    });
+                    window.location.href = "/";
+                  }
+                }}
                 className="text-xs text-[#BFAFAF] hover:text-white underline transition-colors"
-                title="Limpiar sesión local si ocurre un error"
+                title="Forzar limpieza de sesión local si Clerk no responde"
               >
-                Cerrar sesión (O limpiar error)
+                Cerrar sesión (Limpieza Profunda)
               </button>
             </div>
           ) : (
