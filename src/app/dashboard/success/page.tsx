@@ -16,7 +16,7 @@ export default function StripeConnectSuccessPage() {
         </h1>
         
         <p className="text-zinc-600 dark:text-[#BFAFAF] mb-8 leading-relaxed">
-          Tu cuenta está lista. Alynt AI ya puede empezar a rastrear y recuperar tus pagos fallidos de forma segura.
+          Tu cuenta está lista. AlyntAI ya puede empezar a rastrear y recuperar tus pagos fallidos de forma segura.
         </p>
         
         <Link 

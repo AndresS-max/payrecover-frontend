@@ -12,7 +12,7 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Alynt AI",
+  title: "AlyntAI",
   description: "Recupera tus pagos fallidos en piloto automático",
   metadataBase: new URL("https://alyntai.com"),
 };

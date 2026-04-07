@@ -31,7 +31,7 @@ export async function GET() {
     'Cuenta Conectada',
     'Monto Adeudado',
     'Monto Pagado',
-    'Comisión Alynt AI (15%)',
+    'Comisión AlyntAI (15%)',
     'Moneda',
     'Estado',
     'Fecha Creación',
@@ -84,7 +84,7 @@ export async function GET() {
   );
 
   const csv = '\uFEFF' + [headers.join(','), ...rows].join('\n');
-  const filename = `alynt-comisiones-${new Date().toISOString().split('T')[0]}.csv`;
+  const filename = `alyntai-comisiones-${new Date().toISOString().split('T')[0]}.csv`;
 
   return new NextResponse(csv, {
     status: 200,

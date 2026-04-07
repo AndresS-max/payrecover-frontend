@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               <span className="text-[#0D0D0D] text-sm font-extrabold leading-none">A</span>
             </div>
             <h2 className="text-base font-bold text-[#F2F2F2] tracking-tight">
-              Alynt AI
+              AlyntAI
             </h2>
           </div>
         </div>

@@ -66,7 +66,7 @@ export default function OnboardingPage() {
           </h1>
 
           <p className="text-[#BFAFAF] mb-10 text-lg leading-relaxed max-w-lg">
-            Alynt AI necesita tu autorización para rastrear e identificar facturas fallidas.
+            AlyntAI necesita tu autorización para rastrear e identificar facturas fallidas.
             Esta conexión nos permite automatizar el proceso de recuperación de forma <span className="text-[#F2F2F2] font-semibold">100% segura</span> y transparente.
           </p>
 

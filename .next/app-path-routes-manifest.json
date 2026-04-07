@@ -1,0 +1,14 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/export/route": "/api/export",
+  "/dashboard/configuracion/page": "/dashboard/configuracion",
+  "/dashboard/onboarding/page": "/dashboard/onboarding",
+  "/dashboard/page": "/dashboard",
+  "/dashboard/recuperaciones/page": "/dashboard/recuperaciones",
+  "/dashboard/success/page": "/dashboard/success",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
+  "/reauth/page": "/reauth",
+  "/success/page": "/success"
+}

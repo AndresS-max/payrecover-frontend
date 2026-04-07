@@ -1,0 +1,14 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/export/route": "app/api/export/route.js",
+  "/dashboard/configuracion/page": "app/dashboard/configuracion/page.js",
+  "/dashboard/onboarding/page": "app/dashboard/onboarding/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/recuperaciones/page": "app/dashboard/recuperaciones/page.js",
+  "/dashboard/success/page": "app/dashboard/success/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/reauth/page": "app/reauth/page.js",
+  "/success/page": "app/success/page.js"
+}

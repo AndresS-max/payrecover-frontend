@@ -1,10 +1,24 @@
 "use client";
-import { useClerk, useUser } from "@clerk/nextjs";
+import { useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useClerk, useUser, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function LandingPage() {
-  const { openSignIn, signOut } = useClerk();
+  const { openSignIn } = useClerk();
   const { isSignedIn } = useUser();
+  const { signOut } = useAuth();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const isSessionExpired = searchParams?.get('error') === 'session_expired';
+    if (isSessionExpired && isSignedIn) {
+      signOut().then(() => {
+        router.replace('/');
+      });
+    }
+  }, [searchParams, isSignedIn, signOut, router]);
 
   return (
     <div className="min-h-screen bg-[#0F1B27] text-[#F2F2F2] flex flex-col items-center justify-center p-6 selection:bg-[#F2F2F2]/20 selection:text-white relative overflow-hidden">
@@ -44,7 +58,7 @@ export default function LandingPage() {
             backgroundClip: "text",
           }}
         >
-          Alynt AI
+          AlyntAI
         </h1>
 
         <p className="text-lg sm:text-xl text-[#BFAFAF] max-w-xl leading-relaxed font-light">
@@ -56,8 +70,8 @@ export default function LandingPage() {
         <div className="flex items-center gap-10 my-4">
           {[
             { value: "15%", label: "solo si recuperas" },
-            { value: "3",   label: "emails automáticos" },
-            { value: "$0",  label: "costo fijo" },
+            { value: "3", label: "emails automáticos" },
+            { value: "$0", label: "costo fijo" },
           ].map(({ value, label }) => (
             <div key={label} className="flex flex-col items-center gap-1">
               <span className="text-2xl font-bold text-[#F2F2F2]">{value}</span>
@@ -77,6 +91,12 @@ export default function LandingPage() {
                 className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] w-full max-w-xs"
               >
                 Ir al dashboard →
+              </Link>
+              <Link
+                href="/pricing"
+                className="text-sm text-[#BFAFAF] hover:text-white transition-colors"
+              >
+                Ver planes de suscripción
               </Link>
               <button
                 onClick={async () => {
@@ -100,13 +120,21 @@ export default function LandingPage() {
               </button>
             </div>
           ) : (
-            <button
-              type="button"
-              onClick={() => openSignIn({ fallbackRedirectUrl: "/dashboard" })}
-              className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_30px_rgba(242,242,242,0.15)]"
-            >
-              Entrar con Google →
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => openSignIn({ fallbackRedirectUrl: "/dashboard" })}
+                className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-base py-3.5 px-8 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_30px_rgba(242,242,242,0.15)]"
+              >
+                Entrar con Google →
+              </button>
+              <Link
+                href="/pricing"
+                className="bg-white/5 hover:bg-white/10 text-white font-semibold text-base py-3.5 px-8 rounded-full border border-white/10 transition-all text-center flex items-center justify-center"
+              >
+                Ver Planes
+              </Link>
+            </div>
           )}
         </div>
 
