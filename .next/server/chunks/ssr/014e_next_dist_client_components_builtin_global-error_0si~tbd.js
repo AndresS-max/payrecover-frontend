@@ -1,3 +1,0 @@
-module.exports=[95188,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(27431);a.n(d("[project]/OneDrive/Desktop/Payrecovery/payrecover-frontend/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},54583,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(27431);a.n(d("[project]/OneDrive/Desktop/Payrecovery/payrecover-frontend/node_modules/next/dist/client/components/builtin/global-error.js"))},6022,a=>{"use strict";a.i(95188);var b=a.i(54583);a.n(b)},22242,a=>{a.n(a.i(6022))}];
-
-//# sourceMappingURL=014e_next_dist_client_components_builtin_global-error_0si~tbd.js.map
