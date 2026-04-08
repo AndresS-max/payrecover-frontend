@@ -1,10 +1,10 @@
 "use client";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useClerk, useUser, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 
-export default function LandingPage() {
+function LandingPageContent() {
   const { openSignIn } = useClerk();
   const { isSignedIn } = useUser();
   const { signOut } = useAuth();
@@ -143,5 +143,17 @@ export default function LandingPage() {
         </p>
       </main>
     </div>
+  );
+}
+
+export default function LandingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#0F1B27] flex items-center justify-center">
+        <span className="w-8 h-8 border-4 border-[#F2F2F2]/20 border-t-[#F2F2F2] rounded-full animate-spin" />
+      </div>
+    }>
+      <LandingPageContent />
+    </Suspense>
   );
 }
