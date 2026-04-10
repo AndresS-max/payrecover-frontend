@@ -1,4 +1,5 @@
 import { Lock } from "lucide-react";
+import Link from "next/link";
 
 export function BasicDashboardMetrics() {
   return (
@@ -23,9 +24,12 @@ export function BasicDashboardMetrics() {
         <p className="text-sm text-gray-400 max-w-md mb-6">
           Obtén métricas en tiempo real de tu capital en riesgo (Pagos perdidos) vs capital salvado (Pagos recuperados) con el Plan Pro.
         </p>
-        <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2.5 rounded-full font-medium transition-colors shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+        <Link
+          href="/pricing"
+          className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2.5 rounded-full font-medium transition-colors shadow-[0_0_20px_rgba(16,185,129,0.2)] inline-block"
+        >
           Hacer Upgrade a Pro
-        </button>
+        </Link>
       </div>
 
     </div>
