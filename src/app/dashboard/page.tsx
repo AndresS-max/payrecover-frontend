@@ -2,7 +2,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { getProDashboardMetrics } from "@/lib/dashboardMetrics";
 import { ProDashboardMetrics } from "@/components/ProDashboardMetrics";
-import { BasicDashboardMetrics } from "@/components/BasicDashboardMetrics";
 
 import { getUserPlan } from "@/lib/subscriptions";
 
@@ -51,7 +50,11 @@ export default async function DashboardPage() {
           recoveryRate={metrics.recoveryRate} 
         />
       ) : (
-        <BasicDashboardMetrics />
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <p className="text-[#BFAFAF] text-sm">
+            Conecta tu cuenta de Stripe y activa el Plan Pro para ver tus métricas avanzadas.
+          </p>
+        </div>
       )}
     </div>
   );
