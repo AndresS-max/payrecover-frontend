@@ -51,19 +51,19 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value: [
-              // Scripts: self + Clerk + Stripe
+              // Scripts: self + Clerk (dev & prod) + Stripe
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev https://js.stripe.com https://challenges.cloudflare.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev https://clerk.alyntai.com https://*.clerk.alyntai.com https://js.stripe.com https://challenges.cloudflare.com",
               // Styles: self + Google Fonts + inline (Clerk injects styles)
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://clerk.alyntai.com https://*.clerk.alyntai.com",
               // Images: self + Clerk avatars + data URIs + Stripe
-              "img-src 'self' data: blob: https://*.clerk.com https://img.clerk.com https://*.stripe.com",
+              "img-src 'self' data: blob: https://*.clerk.com https://img.clerk.com https://clerk.alyntai.com https://*.clerk.alyntai.com https://*.stripe.com",
               // Fonts: self + Google Fonts
               "font-src 'self' https://fonts.gstatic.com",
-              // API connections: self + Supabase + Backend + Clerk + Stripe
-              "connect-src 'self' https://*.supabase.co https://*.clerk.accounts.dev https://*.clerk.com https://api.stripe.com https://alyntai-backend.onrender.com",
-              // Frames: Clerk modals + Stripe checkout + Cloudflare challenges
-              "frame-src https://*.clerk.accounts.dev https://js.stripe.com https://challenges.cloudflare.com",
+              // API connections: self + Supabase + Backend + Clerk (dev & prod) + Stripe
+              "connect-src 'self' https://*.supabase.co https://*.clerk.accounts.dev https://*.clerk.com https://clerk.alyntai.com https://*.clerk.alyntai.com https://api.stripe.com https://alyntai-backend.onrender.com",
+              // Frames: Clerk modals (dev & prod) + Stripe checkout + Cloudflare challenges
+              "frame-src https://*.clerk.accounts.dev https://clerk.alyntai.com https://*.clerk.alyntai.com https://js.stripe.com https://challenges.cloudflare.com",
               // Workers: self + blob (Next.js uses workers)
               "worker-src 'self' blob:",
               // Block all object/embed
