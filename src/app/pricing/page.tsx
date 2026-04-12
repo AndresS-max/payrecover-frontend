@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useUser, useClerk } from "@clerk/nextjs";
-import { Check, ArrowRight, Loader2, X } from "lucide-react";
+import { Check, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 
 const PLANS = [
@@ -40,14 +40,6 @@ const PLANS = [
     cta: "Obtener Pro ahora",
     highlighted: true,
   },
-];
-
-const COMPARISON = [
-  { feature: "Tarifa base mensual", us: "Desde $9.99/mes", them: "$200-500/mes" },
-  { feature: "Comisión por recuperación", us: "0%", them: "20-30%" },
-  { feature: "Recuperas $1,000", us: "Tú te quedas $1,000", them: "Tú te quedas $700-800" },
-  { feature: "Recuperas $5,000", us: "Tú te quedas $5,000", them: "Tú te quedas $3,500-4,000" },
-  { feature: "Recuperas $10,000", us: "Tú te quedas $10,000", them: "Tú te quedas $7,000-8,000" },
 ];
 
 export default function PricingPage() {
@@ -91,85 +83,81 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F1B27] text-[#F2F2F2] flex flex-col items-center relative overflow-hidden font-nunito">
+    <div className="min-h-screen bg-deep relative flex flex-col items-center">
       
       {/* Background Decor */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle, rgba(242,242,242,0.03) 1px, transparent 1px)`,
-          backgroundSize: "32px 32px",
-        }}
-      />
-      <div className="absolute top-[-10%] left-[50%] -translate-x-1/2 w-[800px] h-[500px] bg-white opacity-[0.03] blur-[120px] rounded-full" />
+      <div className="absolute inset-0 bg-dot-grid mask-radial pointer-events-none opacity-30"></div>
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-primary/[0.02] rounded-full blur-[120px] pointer-events-none"></div>
 
       {/* Navbar */}
-      <nav className="w-full sticky top-0 z-50 bg-[#0F1B27]/80 backdrop-blur-xl border-b border-[#F2F2F2]/[0.06]">
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-[#F2F2F2] flex items-center justify-center">
-              <span className="text-[#0D0D0D] text-sm font-extrabold">A</span>
-            </div>
-            <span className="text-lg font-extrabold tracking-tight">AlyntAI</span>
+      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+        <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-14">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-xl font-bold tracking-tight transition-colors text-primary">AlyntAI</span>
           </Link>
-          <Link href="/" className="text-sm text-[#BFAFAF] hover:text-white transition-colors flex items-center gap-1 group">
-            <span className="group-hover:-translate-x-0.5 transition-transform">←</span> Inicio
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/" className="text-sm transition-colors px-3 py-1.5 rounded-md font-medium text-muted hover:text-primary">
+              ← Inicio
+            </Link>
+            <Link href="/sign-up" className="text-sm px-4 py-1.5 rounded-md font-medium transition-all bg-primary text-black hover:bg-primary/90">
+              Start free trial
+            </Link>
+          </div>
         </div>
       </nav>
 
       {/* Header */}
-      <div className="relative text-center max-w-3xl pt-20 pb-4 px-6">
-        <div className="inline-flex items-center gap-2 bg-[#0D0D0D] border border-[#F2F2F2]/10 rounded-full px-5 py-2 text-sm text-[#BFAFAF] mb-8">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+      <div className="relative text-center max-w-3xl pt-32 pb-4 px-6 md:pt-44">
+        <div className="inline-flex items-center gap-2 rounded-full border border-soft px-4 py-1.5 text-xs font-medium mb-8 bg-card/[0.5] text-primary hover-lift">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-subtle" />
           Tarifa fija, sin comisiones
         </div>
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-primary">
           Ellos cobran comisión.<br />
           <span className="opacity-60">Nosotros no.</span>
         </h1>
-        <p className="text-xl text-[#BFAFAF] max-w-xl mx-auto">
-          Otros cobran 20-30% de cada dólar recuperado. AlyntAI es tarifa fija. <span className="text-[#F2F2F2] font-semibold">Tú te quedas con todo lo que recuperas.</span>
+        <p className="text-xl text-muted max-w-xl mx-auto leading-relaxed">
+          Otros cobran 20-30% de cada dólar recuperado. AlyntAI es tarifa fija. <span className="text-primary font-semibold">Tú te quedas con todo lo que recuperas.</span>
         </p>
       </div>
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl relative px-6 py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl relative px-6 py-12 z-10">
         {PLANS.map((plan) => (
           <div
             key={plan.id}
             className={`
-              relative flex flex-col p-8 rounded-3xl border transition-all duration-500
+              relative flex flex-col p-8 rounded-lg border transition-all hover-lift
               ${plan.highlighted 
-                ? "bg-white/5 border-white/20 shadow-[0_0_50px_rgba(255,255,255,0.05)] scale-[1.03] z-10" 
-                : "bg-[#0D0D0D]/50 border-white/5 hover:border-white/10"
+                ? "bg-card border-primary/30 shadow-lg scale-[1.02] shadow-black/80" 
+                : "bg-card-alt border-soft hover:border-primary/10"
               }
             `}
           >
             {plan.highlighted && (
-              <div className="absolute top-0 right-8 -translate-y-1/2 bg-[#F2F2F2] text-[#0D0D0D] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+              <div className="absolute top-0 right-8 -translate-y-1/2 bg-primary text-[black] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
                 Recomendado
               </div>
             )}
 
             <div className="mb-8">
-              <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+              <h3 className="text-2xl font-bold mb-2 text-primary">{plan.name}</h3>
               <div className="flex items-baseline gap-1 mb-4">
-                <span className="text-5xl font-extrabold">{plan.price}</span>
-                <span className="text-[#BFAFAF] font-light">/mes</span>
+                <span className="text-5xl font-extrabold text-primary">{plan.price}</span>
+                <span className="text-muted font-light">/mes</span>
               </div>
-              <p className="text-[#BFAFAF] text-sm leading-relaxed">
+              <p className="text-muted text-sm leading-relaxed">
                 {plan.description}
               </p>
             </div>
 
             <ul className="flex-grow space-y-4 mb-10">
               {plan.features.map((feature, idx) => (
-                <li key={idx} className="flex gap-3 text-sm items-center">
-                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-white/5 flex items-center justify-center">
-                    <Check className="w-3 h-3 text-[#F2F2F2]" />
+                <li key={idx} className="flex gap-3 text-sm items-start">
+                  <div className="flex-shrink-0 mt-0.5">
+                    <Check className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="text-[#D9D9D9]">{feature}</span>
+                  <span className="text-muted/90">{feature}</span>
                 </li>
               ))}
             </ul>
@@ -178,20 +166,20 @@ export default function PricingPage() {
               onClick={() => handleSubscription(plan.priceId)}
               disabled={loadingPriceId === plan.priceId}
               className={`
-                w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all group
+                w-full h-11 rounded-md font-medium text-sm flex items-center justify-center gap-2 transition-all group
                 ${plan.highlighted 
-                  ? "bg-[#F2F2F2] text-[#0D0D0D] hover:bg-white" 
-                  : "bg-white/10 text-white hover:bg-white/20"
+                  ? "bg-primary text-[black] hover:opacity-90 cta-glow border-0" 
+                  : "bg-white/5 border border-soft text-primary hover:bg-white/10"
                 }
                 disabled:opacity-50 disabled:cursor-not-allowed
               `}
             >
               {loadingPriceId === plan.priceId ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 <>
                   {plan.cta}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </button>
@@ -200,43 +188,75 @@ export default function PricingPage() {
       </div>
 
       {/* ═══ COMPARISON TABLE ═══ */}
-      <div className="w-full max-w-4xl px-6 py-16">
+      <div className="w-full max-w-4xl px-6 py-16 z-10">
         <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-extrabold mb-3">¿Por qué tarifa fija?</h2>
-          <p className="text-[#BFAFAF]">Haz las cuentas. Con AlyntAI te quedas con todo.</p>
+          <p className="text-muted text-sm uppercase tracking-wider font-medium mb-3">La Diferencia</p>
+          <h2 className="text-3xl font-bold tracking-tight text-primary mb-3">¿Por qué tarifa fija?</h2>
+          <p className="text-muted">Haz las cuentas. Con AlyntAI te quedas con todo lo que te corresponde.</p>
         </div>
         
-        <div className="bg-[#0D0D0D]/60 border border-[#F2F2F2]/[0.06] rounded-2xl overflow-hidden">
-          {/* Header */}
-          <div className="grid grid-cols-3 text-sm font-bold border-b border-[#F2F2F2]/[0.06]">
-            <div className="p-4 text-[#BFAFAF]">Concepto</div>
-            <div className="p-4 text-center bg-[#F2F2F2]/[0.03]">
-              <span className="text-[#F2F2F2]">AlyntAI</span>
+        <div className="rounded-lg border border-soft bg-card overflow-hidden shadow-sm hover-lift">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-soft bg-black/30">
+                    <th className="text-left py-4 px-6 text-muted text-xs font-medium uppercase tracking-wider w-[200px]">Característica</th>
+                    <th className="text-center py-4 px-6 text-xs font-semibold uppercase tracking-wider text-black bg-primary min-w-[130px]">AlyntAI</th>
+                    <th className="text-center py-4 px-6 text-muted text-xs font-medium uppercase tracking-wider min-w-[130px]">Los Demás</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted font-medium">Tarifa base mensual</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-primary font-semibold">Desde $9.99/mes</span></td>
+                    <td className="py-4 px-6 text-center text-muted/80">$200-500/mes</td>
+                  </tr>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted font-medium">Comisión por éxito</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-primary font-semibold">0%</span></td>
+                    <td className="py-4 px-6 text-center text-muted/80">20-30%</td>
+                  </tr>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted font-medium">Recuperas $1,000</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-success font-semibold tracking-wide text-lg">Tú quedas $1,000</span></td>
+                    <td className="py-4 px-6 text-center text-loss font-semibold tracking-wide">$700-800</td>
+                  </tr>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted font-medium">Recuperas $5,000</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-success font-semibold tracking-wide text-lg">Tú quedas $5,000</span></td>
+                    <td className="py-4 px-6 text-center text-loss font-semibold tracking-wide">$3,500-4,000</td>
+                  </tr>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted font-medium">Recuperas $10,000</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-success font-semibold tracking-wide text-lg">Tú quedas $10,000</span></td>
+                    <td className="py-4 px-6 text-center text-loss font-semibold tracking-wide">$7,000-8,000</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div className="p-4 text-center text-[#BFAFAF]/60">Otros</div>
           </div>
-          {/* Rows */}
-          {COMPARISON.map((row, i) => (
-            <div key={i} className={`grid grid-cols-3 text-sm ${i < COMPARISON.length - 1 ? "border-b border-[#F2F2F2]/[0.04]" : ""}`}>
-              <div className="p-4 text-[#BFAFAF]">{row.feature}</div>
-              <div className="p-4 text-center bg-[#F2F2F2]/[0.03] text-[#F2F2F2] font-semibold flex items-center justify-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                {row.us}
-              </div>
-              <div className="p-4 text-center text-[#BFAFAF]/40 flex items-center justify-center gap-1.5">
-                <X className="w-3.5 h-3.5 text-red-400/50 flex-shrink-0" />
-                {row.them}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
 
-      {/* Footer Info */}
-      <div className="pb-16 text-center text-xs text-[#BFAFAF]/40 px-6">
+      <div className="pb-16 text-center text-[11px] text-muted/40 px-6 z-10">
         <p>Tarifa fija mensual. Sin comisiones por recuperación. Sin costos ocultos.<br />
         Sin compromiso. Cancela en cualquier momento desde tu panel.</p>
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-soft bg-card-alt w-full mt-auto">
+        <div className="max-w-5xl mx-auto px-6 py-10">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold tracking-tight text-primary">AlyntAI</span>
+            </div>
+            <div className="flex items-center gap-6 text-xs text-muted">
+              <Link href="/terms" className="hover:text-primary transition-colors">Términos</Link>
+              <a href="mailto:hola@alyntai.com" className="hover:text-primary transition-colors">Soporte</a>
+            </div>
+            <p className="text-xs text-muted/50">© {new Date().getFullYear()} AlyntAI</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

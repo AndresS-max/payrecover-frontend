@@ -1,429 +1,317 @@
-"use client";
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useClerk, useUser, useAuth } from "@clerk/nextjs";
-import Link from "next/link";
+import Link from 'next/link';
+import { ArrowRight, Check } from 'lucide-react';
 
-/* ─── Animated counter ────────────────────────────────────────────────── */
-function AnimatedNumber({ target, prefix = "", suffix = "" }: { target: number; prefix?: string; suffix?: string }) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    let start = 0;
-    const end = target;
-    const duration = 2000;
-    const stepTime = 16;
-    const steps = duration / stepTime;
-    const increment = end / steps;
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) { setValue(end); clearInterval(timer); }
-      else setValue(Math.floor(start));
-    }, stepTime);
-    return () => clearInterval(timer);
-  }, [target]);
-  return <>{prefix}{value.toLocaleString()}{suffix}</>;
-}
-
-/* ─── Section wrapper ─────────────────────────────────────────────────── */
-function Section({ children, id, dark = true, className = "" }: { children: React.ReactNode; id?: string; dark?: boolean; className?: string }) {
+export default function Home() {
   return (
-    <section id={id} className={`relative py-24 px-6 ${dark ? "bg-[#0F1B27]" : "bg-[#0D0D0D]"} ${className}`}>
-      <div className="max-w-6xl mx-auto">{children}</div>
-    </section>
-  );
-}
-
-function LandingPageContent() {
-  const { openSignIn } = useClerk();
-  const { isSignedIn } = useUser();
-  const { signOut } = useAuth();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    const isSessionExpired = searchParams?.get('error') === 'session_expired';
-    if (isSessionExpired && isSignedIn) {
-      signOut().then(() => router.replace('/'));
-    }
-  }, [searchParams, isSignedIn, signOut, router]);
-
-  const handleCTA = () => {
-    if (isSignedIn) router.push("/dashboard");
-    else openSignIn({ fallbackRedirectUrl: "/dashboard" });
-  };
-
-  return (
-    <div className="min-h-screen bg-[#0F1B27] text-[#F2F2F2] selection:bg-[#F2F2F2]/20 selection:text-white overflow-hidden">
-
-      {/* ════════════ NAVBAR ════════════ */}
-      <nav className="sticky top-0 z-50 bg-[#0F1B27]/80 backdrop-blur-xl border-b border-[#F2F2F2]/[0.06]">
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#F2F2F2] flex items-center justify-center">
-              <span className="text-[#0D0D0D] text-sm font-extrabold">A</span>
-            </div>
-            <span className="text-lg font-extrabold tracking-tight">AlyntAI</span>
-          </div>
-          <div className="flex items-center gap-4">
-            {isSignedIn ? (
-              <>
-                <Link href="/dashboard" className="text-sm text-[#BFAFAF] hover:text-white transition-colors">Dashboard</Link>
-                <button onClick={handleCTA} className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-sm py-2.5 px-6 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-                  Ir al panel →
-                </button>
-              </>
-            ) : (
-              <>
-                <button onClick={() => openSignIn({ fallbackRedirectUrl: "/dashboard" })} className="text-sm text-[#BFAFAF] hover:text-white transition-colors">
-                  Iniciar sesión
-                </button>
-                <button onClick={handleCTA} className="bg-[#F2F2F2] hover:bg-[#D9D9D9] text-[#0D0D0D] font-semibold text-sm py-2.5 px-6 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_30px_rgba(242,242,242,0.1)]">
-                  Empezar gratis
-                </button>
-              </>
-            )}
+    <div className="min-h-screen bg-deep relative">
+      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+        <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-14">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-xl font-bold tracking-tight transition-colors text-primary">AlyntAI</span>
+          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/sign-in" className="text-sm transition-colors px-3 py-1.5 rounded-md font-medium text-muted hover:text-primary">
+              Log in
+            </Link>
+            <Link href="/sign-up" className="text-sm px-4 py-1.5 rounded-md font-medium transition-all bg-primary text-black hover:bg-primary/90">
+              Start free trial
+            </Link>
           </div>
         </div>
       </nav>
 
-      {/* ════════════ HERO ════════════ */}
-      <section className="relative pt-32 pb-24 px-6 overflow-hidden">
-        {/* Grid pattern */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: `radial-gradient(circle, rgba(242,242,242,0.04) 1px, transparent 1px)`,
-          backgroundSize: "32px 32px",
-        }} />
-        {/* Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(242,242,242,0.05) 0%, transparent 60%)" }}
-        />
-
-        <div className="relative max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-[#0D0D0D] border border-[#F2F2F2]/10 rounded-full px-5 py-2 text-sm text-[#BFAFAF] mb-10">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            Recuperación de pagos con IA
+      <section className="relative pt-32 pb-32 md:pt-44 md:pb-40 overflow-hidden">
+        <div className="absolute inset-0 bg-dot-grid mask-radial pointer-events-none opacity-30"></div>
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-primary/[0.02] rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="relative max-w-3xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-soft px-4 py-1.5 text-xs font-medium mb-8 bg-card/[0.5] text-primary hover-lift">
+            <span className="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse-subtle"></span>
+            $9.99/mo flat — no el 30% de lo que recuperamos
           </div>
-
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.95] mb-8"
-            style={{
-              background: "linear-gradient(135deg, #F2F2F2 0%, #BFAFAF 60%, #D9D9D9 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            Tu herramienta de<br />dunning cobra comisión.<br />
-            <span style={{ WebkitTextFillColor: "#F2F2F2" }}>Nosotros no.</span>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-[-0.04em] leading-[1.05] mb-6 text-primary">
+            Tu herramienta de dunning<br/>cobra comisión. Nosotros no.
           </h1>
-
-          <p className="text-lg sm:text-xl text-[#BFAFAF] max-w-2xl mx-auto leading-relaxed font-light mb-10">
-            Recuperación de pagos fallidos con IA para SaaS. Reintentos inteligentes, emails personalizados, dashboard en tiempo real. Conecta Stripe en 2 minutos.
+          <p className="text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed text-muted">
+            Recuperación de pagos con IA para SaaS. Reintentos inteligentes, emails personalizados, dashboard ROI en tiempo real. Conecta Stripe en 2 minutos.
           </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-            <button onClick={handleCTA}
-              className="bg-[#F2F2F2] hover:bg-white text-[#0D0D0D] font-bold text-base py-4 px-10 rounded-full transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-[0_0_40px_rgba(242,242,242,0.15)]"
-            >
-              {isSignedIn ? "Ir al dashboard →" : "Empezar prueba gratis →"}
-            </button>
-            <Link href="/pricing"
-              className="bg-white/5 hover:bg-white/10 text-white font-semibold text-base py-4 px-10 rounded-full border border-white/10 transition-all text-center flex items-center justify-center"
-            >
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/sign-up" className="inline-flex items-center justify-center whitespace-nowrap font-medium h-11 rounded-md gap-2 bg-primary hover:opacity-90 text-[black] border-0 cta-glow text-sm px-6 transition-all">
+              Comenzar prueba gratis
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+            <Link href="/pricing" className="inline-flex items-center justify-center whitespace-nowrap font-medium border h-11 rounded-md px-8 border-soft text-primary bg-white/5 hover:bg-white/10 text-sm transition-all hover-lift">
               Ver planes
             </Link>
           </div>
-
-          <p className="text-xs text-[#BFAFAF]/50">
-            Sin tarjeta de crédito · Sin comisiones · Cancela cuando quieras
-          </p>
+          <p className="text-[11px] text-muted/50 mt-5">Prueba gratis · Sin tarjeta de crédito · Cancela en cualquier momento</p>
         </div>
       </section>
 
-      {/* ════════════ STATS ════════════ */}
-      <Section dark={false}>
-        <div className="text-center mb-12">
-          <span className="text-sm text-[#BFAFAF] font-semibold uppercase tracking-widest">El problema</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-3">
-            Estás perdiendo ingresos ahora mismo<br className="hidden md:block" /> y no lo sabes
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { value: 9, prefix: "$", suffix: "B+", label: "Perdidos en pagos fallidos al año", sub: "Recurly, 2024" },
-            { value: 15, suffix: "%", label: "De pagos recurrentes fallan silenciosamente", sub: "Promedio de la industria" },
-            { value: 78, suffix: "%", label: "Tasa media de recuperación", sub: "Benchmark AlyntAI" },
-          ].map((stat, i) => (
-            <div key={i} className="bg-[#0F1B27]/60 border border-[#F2F2F2]/[0.06] rounded-2xl p-8 text-center group hover:border-[#F2F2F2]/15 transition-all duration-500">
-              <div className="text-4xl md:text-5xl font-black mb-3 text-[#F2F2F2]">
-                <AnimatedNumber target={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
-              </div>
-              <p className="text-[#BFAFAF] text-sm mb-1">{stat.label}</p>
-              <p className="text-[#BFAFAF]/40 text-xs">{stat.sub}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ════════════ HOW IT WORKS ════════════ */}
-      <Section id="how">
-        <div className="text-center mb-16">
-          <span className="text-sm text-[#BFAFAF] font-semibold uppercase tracking-widest">Cómo funciona</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-3">
-            Tres pasos. Dos minutos.
-          </h2>
-          <p className="text-[#BFAFAF] mt-3 text-lg">Sin código. Sin llamadas de ventas.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            { step: "01", title: "Conecta Stripe", desc: "OAuth en un clic. Sin código, sin DNS, sin ingeniería. Toma 30 segundos." },
-            { step: "02", title: "La IA monitorea y recupera", desc: "Reintentos inteligentes según código de rechazo. Emails personalizados con IA." },
-            { step: "03", title: "Observa tus ingresos volver", desc: "Dashboard en tiempo real: cada dólar recuperado, tu tasa exacta de éxito." },
-          ].map((item, i) => (
-            <div key={i} className="relative group">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#F2F2F2]/[0.06] border border-[#F2F2F2]/10 flex items-center justify-center text-sm font-bold text-[#F2F2F2] group-hover:bg-[#F2F2F2]/10 transition-all duration-300">
-                  {item.step}
-                </div>
-                {i < 2 && (
-                  <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-[#F2F2F2]/10 to-transparent" />
-                )}
-              </div>
-              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-              <p className="text-[#BFAFAF] text-sm leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ════════════ DASHBOARD PREVIEW ════════════ */}
-      <Section dark={false}>
-        <div className="text-center mb-12">
-          <span className="text-sm text-[#BFAFAF] font-semibold uppercase tracking-widest">Dashboard en tiempo real</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-3">
-            Ve cada dólar recuperado
-          </h2>
-          <p className="text-[#BFAFAF] mt-3 max-w-2xl mx-auto">
-            Sin porcentajes ocultos. Sin reportes vagos. Tu panel muestra exactamente cuánto ha recuperado AlyntAI, tu tasa de recuperación, y tu ROI neto. Números reales, en tiempo real.
-          </p>
-        </div>
-
-        {/* Mini dashboard mockup */}
-        <div className="bg-[#0F1B27] border border-[#F2F2F2]/[0.08] rounded-3xl p-8 max-w-4xl mx-auto shadow-2xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
-            {[
-              { label: "Recuperados", value: "$4,280", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
-              { label: "Fallidos", value: "$8,230", color: "text-orange-400", bg: "bg-orange-500/10 border-orange-500/20" },
-              { label: "Tasa de recuperación", value: "52%", color: "text-[#F2F2F2]", bg: "bg-white/5 border-white/10" },
-            ].map((card, i) => (
-              <div key={i} className={`${card.bg} border rounded-2xl p-5`}>
-                <p className="text-xs text-[#BFAFAF] uppercase tracking-wide mb-1">{card.label}</p>
-                <p className={`text-3xl font-black ${card.color}`}>{card.value}</p>
-              </div>
-            ))}
+      <section className="relative -mt-8 max-w-4xl mx-auto px-6 pb-20 hover-lift">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/5 rounded-xl overflow-hidden shadow-xl border border-soft">
+          <div className="bg-card p-7 md:p-8 text-center transition-colors hover:bg-[#152739]">
+            <span className="font-mono text-3xl md:text-4xl font-bold tabular-nums tracking-tight text-primary">$1B+</span>
+            <p className="text-sm text-muted mt-1.5">Perdidos por pagos fallidos anualmente</p>
+            <p className="text-[10px] text-muted/60 mt-0.5">Recurly, reporte 2024</p>
           </div>
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { n: "12", label: "En reintento" },
-              { n: "31", label: "Recuperados" },
-              { n: "5", label: "Perdidos" },
-            ].map((s, i) => (
-              <div key={i} className="bg-white/[0.03] border border-white/5 rounded-xl p-4 text-center">
-                <p className="text-2xl font-bold">{s.n}</p>
-                <p className="text-xs text-[#BFAFAF]">{s.label}</p>
-              </div>
-            ))}
+          <div className="bg-card p-7 md:p-8 text-center transition-colors hover:bg-[#152739]">
+            <span className="font-mono text-3xl md:text-4xl font-bold tabular-nums tracking-tight text-loss">9%</span>
+            <p className="text-sm text-muted mt-1.5">De los pagos recurrentes fallan en silencio</p>
+            <p className="text-[10px] text-muted/60 mt-0.5">Promedio de la industria</p>
+          </div>
+          <div className="bg-card p-7 md:p-8 text-center transition-colors hover:bg-[#152739]">
+            <span className="font-mono text-3xl md:text-4xl font-bold tabular-nums tracking-tight text-success">48%</span>
+            <p className="text-sm text-muted mt-1.5">Tasa media de recuperación</p>
+            <p className="text-[10px] text-muted/60 mt-0.5">Métrica destacada AlyntAI</p>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* ════════════ AI EMAILS ════════════ */}
-      <Section>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <span className="text-sm text-[#BFAFAF] font-semibold uppercase tracking-widest">Emails con IA</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold mt-3 mb-4">
-              No son plantillas.<br />Es inteligencia.
-            </h2>
-            <p className="text-[#BFAFAF] leading-relaxed mb-6">
-              Los emails genéricos de &quot;tu pago falló&quot; se ignoran. La IA de AlyntAI escribe cada email de recuperación basado en la razón específica del rechazo, historial del cliente, y nivel de urgencia — para que realmente se abran y se actúe.
-            </p>
-            <ul className="space-y-3">
-              {["Secuencia de 3 emails automáticos", "Personalizados por razón de rechazo", "Se cancelan al recuperar el pago"].map((feat, i) => (
-                <li key={i} className="flex items-center gap-3 text-sm">
-                  <div className="w-5 h-5 rounded-full bg-[#F2F2F2]/10 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-3 h-3 text-[#F2F2F2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                  </div>
-                  <span className="text-[#D9D9D9]">{feat}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <section className="max-w-3xl mx-auto px-6 pb-20 text-center">
+        <p className="text-primary text-sm uppercase tracking-wider font-medium mb-4">El problema</p>
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-primary mb-4">Estás perdiendo ingresos ahora mismo y no lo sabes</h2>
+        <p className="text-muted max-w-lg mx-auto leading-relaxed">Los pagos fallidos son la causa número 1 de churn involuntario. Los reintentos automáticos de Stripe recuperan algo — pero sin el momento adecuado y contacto personalizado, estás dejando más del 50% en la mesa. Cada hora sin dunning son ingresos que se esfuman.</p>
+      </section>
 
-          {/* Email preview mock */}
-          <div className="bg-[#0D0D0D] border border-[#F2F2F2]/[0.08] rounded-2xl p-6 shadow-xl">
-            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-[#F2F2F2]/[0.06]">
-              <div className="w-8 h-8 rounded-full bg-[#F2F2F2]/10 flex items-center justify-center text-xs font-bold">A</div>
-              <div>
-                <p className="text-sm font-semibold">Acme SaaS</p>
-                <p className="text-xs text-[#BFAFAF]">billing@acmesaas.com</p>
-              </div>
-            </div>
-            <p className="text-sm font-semibold mb-3">Tu suscripción necesita atención</p>
-            <div className="text-sm text-[#BFAFAF] space-y-3 leading-relaxed">
-              <p>Hola Sarah,</p>
-              <p>Notamos que el pago de <span className="text-white font-medium">$89.00</span> para tu plan Pro no se procesó. Esto sucede a veces cuando una tarjeta expira o tu banco marca un cargo desconocido.</p>
-              <p>Para mantener tu cuenta activa, actualiza tu método de pago. Toma 30 segundos.</p>
-              <div className="mt-4">
-                <div className="bg-[#F2F2F2] text-[#0D0D0D] text-sm font-semibold py-2.5 px-6 rounded-lg inline-block">
-                  Actualizar método de pago →
-                </div>
-              </div>
-            </div>
-            <p className="text-[10px] text-[#BFAFAF]/40 mt-4 pt-3 border-t border-[#F2F2F2]/[0.06]">
-              Generado por IA — personalizado según razón de rechazo y contexto del cliente
-            </p>
-          </div>
-        </div>
-      </Section>
-
-      {/* ════════════ FEATURES GRID ════════════ */}
-      <Section dark={false}>
-        <div className="text-center mb-14">
-          <span className="text-sm text-[#BFAFAF] font-semibold uppercase tracking-widest">Características</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-3">
-            Recuperación enterprise.<br className="hidden md:block" />Precio indie.
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            { icon: "⚡", title: "Motor de reintentos inteligente", desc: "Horarios según código de rechazo. Fondos insuficientes en 3/7/14 días. Errores de procesamiento en 4 horas." },
-            { icon: "🤖", title: "Emails con IA", desc: "IA contextual basada en razón de rechazo, historial y urgencia del pago." },
-            { icon: "📊", title: "Dashboard en tiempo real", desc: "Ingresos recuperados, tasa de recuperación, y ROI neto. Actualizado al instante." },
-            { icon: "📧", title: "Secuencia de 3 emails", desc: "Aviso amable, recordatorio gentil, advertencia final. Auto-cancelada al recuperar." },
-            { icon: "🔒", title: "Seguro por defecto", desc: "Encriptación AES-256. Stripe OAuth. URLs firmados con HMAC. Cumple CAN-SPAM." },
-            { icon: "📋", title: "Reporte de onboarding con IA", desc: "Análisis instantáneo de tus patrones de fallo, ingresos recuperables, y códigos de rechazo principales." },
-          ].map((feat, i) => (
-            <div key={i} className="bg-[#0F1B27]/60 border border-[#F2F2F2]/[0.06] rounded-2xl p-7 group hover:border-[#F2F2F2]/15 transition-all duration-500">
-              <div className="text-2xl mb-4">{feat.icon}</div>
-              <h3 className="text-base font-bold mb-2">{feat.title}</h3>
-              <p className="text-sm text-[#BFAFAF] leading-relaxed">{feat.desc}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ════════════ PRICING PREVIEW ════════════ */}
-      <Section id="pricing">
-        <div className="text-center mb-14">
-          <span className="text-sm text-[#BFAFAF] font-semibold uppercase tracking-widest">Precios</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-3">
-            Ellos cobran comisión. Nosotros no.
-          </h2>
-          <p className="text-[#BFAFAF] mt-3 max-w-2xl mx-auto">
-            Otros cobran 20-30% de cada dólar recuperado, más cientos en tarifas base. AlyntAI es tarifa fija. Tú te quedas con lo que recuperas.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {[
-            { name: "Standard", price: "$9.99", desc: "Ideal para negocios empezando su recuperación.", features: ["Hasta 50 recuperaciones/mes", "Soporte por email", "Panel de métricas básico", "Sin comisiones ocultas"], cta: "Empezar con Standard", highlighted: false },
-            { name: "Enterprise Recovery", price: "$29.99", desc: "Potencia total para agencias y negocios de alto volumen.", features: ["Recuperaciones ilimitadas", "Soporte prioritario", "Analytics avanzados", "Personalización de marca", "Sin comisiones ocultas"], cta: "Obtener Pro ahora", highlighted: true },
-          ].map((plan, i) => (
-            <div key={i} className={`relative flex flex-col p-8 rounded-3xl border transition-all duration-500 ${plan.highlighted
-              ? "bg-white/5 border-white/20 shadow-[0_0_50px_rgba(255,255,255,0.05)] scale-[1.03] z-10"
-              : "bg-[#0D0D0D]/50 border-white/5 hover:border-white/10"
-            }`}>
-              {plan.highlighted && (
-                <div className="absolute top-0 right-8 -translate-y-1/2 bg-[#F2F2F2] text-[#0D0D0D] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                  Recomendado
-                </div>
-              )}
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <div className="flex items-baseline gap-1 mb-3">
-                  <span className="text-4xl font-extrabold">{plan.price}</span>
-                  <span className="text-[#BFAFAF] font-light">/mes</span>
-                </div>
-                <p className="text-[#BFAFAF] text-sm">{plan.desc}</p>
-              </div>
-              <ul className="flex-grow space-y-3 mb-8">
-                {plan.features.map((f, j) => (
-                  <li key={j} className="flex gap-3 text-sm items-center">
-                    <div className="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-[#F2F2F2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                    </div>
-                    <span className="text-[#D9D9D9]">{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/pricing" className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all group text-center ${plan.highlighted
-                ? "bg-[#F2F2F2] text-[#0D0D0D] hover:bg-white"
-                : "bg-white/10 text-white hover:bg-white/20"
-              }`}>
-                {plan.cta}
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ════════════ FINAL CTA ════════════ */}
-      <Section dark={false}>
-        <div className="relative text-center py-12">
-          {/* Glow */}
-          <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-            <div className="w-[500px] h-[300px] rounded-full" style={{ background: "radial-gradient(circle, rgba(242,242,242,0.04) 0%, transparent 70%)" }} />
+      <section id="how-it-works" className="bg-card-alt py-20 border-y border-soft">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <p className="text-muted text-sm uppercase tracking-wider font-medium mb-3">Cómo funciona</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-primary mb-3">Tres pasos. Dos minutos.</h2>
+            <p className="text-muted text-sm">Sin ingeniería, sin complicadas integraciones. Sólo ingresos.</p>
           </div>
           <div className="relative">
-            <h2 className="text-3xl md:text-5xl font-extrabold mb-4">
-              Estás perdiendo ingresos<br />ahora mismo.
-            </h2>
-            <p className="text-[#BFAFAF] mb-8 max-w-xl mx-auto">
-              Recupera un solo pago de $50 y AlyntAI ya se pagó solo. La mayoría de clientes ven 10-50x ROI en el primer mes.
-            </p>
-            <button onClick={handleCTA}
-              className="bg-[#F2F2F2] hover:bg-white text-[#0D0D0D] font-bold text-base py-4 px-10 rounded-full transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-[0_0_40px_rgba(242,242,242,0.15)]"
-            >
-              {isSignedIn ? "Ir al dashboard →" : "Empezar prueba gratis →"}
-            </button>
-            <p className="text-xs text-[#BFAFAF]/50 mt-4">
-              Conecta Stripe en 2 minutos · Sin tarjeta de crédito · Cancela en cualquier momento
-            </p>
+            <div className="hidden md:block absolute top-[52px] left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="rounded-lg border border-soft bg-card hover:border-primary/30 transition-all hover-lift shadow-sm">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center transition-colors">
+                      <span className="text-primary font-bold text-lg">1</span>
+                    </div>
+                    <span className="font-mono text-xs text-muted/40">01</span>
+                  </div>
+                  <h3 className="font-semibold text-sm mb-1.5 text-primary">Conecta Stripe</h3>
+                  <p className="text-sm text-muted leading-relaxed">Vinculación OAuth de un solo clic. Sin código, sin tokens expuestos. Toma literalmente 30 segundos.</p>
+                </div>
+              </div>
+              <div className="rounded-lg border border-soft bg-card hover:border-primary/30 transition-all hover-lift shadow-sm">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center transition-colors">
+                      <span className="text-primary font-bold text-lg">2</span>
+                    </div>
+                    <span className="font-mono text-xs text-muted/40">02</span>
+                  </div>
+                  <h3 className="font-semibold text-sm mb-1.5 text-primary">La IA monitorea y recupera</h3>
+                  <p className="text-sm text-muted leading-relaxed">Reintentos inteligentes programados junto a emails redactados hiper-personalizados para cada fallo.</p>
+                </div>
+              </div>
+              <div className="rounded-lg border border-soft bg-card hover:border-primary/30 transition-all hover-lift shadow-sm">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center transition-colors">
+                      <span className="text-primary font-bold text-lg">3</span>
+                    </div>
+                    <span className="font-mono text-xs text-muted/40">03</span>
+                  </div>
+                  <h3 className="font-semibold text-sm mb-1.5 text-primary">Atrapa los ingresos perder</h3>
+                  <p className="text-sm text-muted leading-relaxed">El dashboard en tiempo real muestra cada dólar recuperado a tu cuenta y tu ROI exacto del mes.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* ════════════ FOOTER ════════════ */}
-      <footer className="bg-[#0F1B27] border-t border-[#F2F2F2]/[0.06] py-8 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#BFAFAF]/50">
-          <p>© {new Date().getFullYear()} AlyntAI</p>
-          <div className="flex items-center gap-6">
-            <Link href="/pricing" className="hover:text-white transition-colors">Planes</Link>
-            {isSignedIn ? (
-              <button onClick={async () => {
-                try { await signOut(); } catch (e) { console.error(e); }
-                finally { localStorage.clear(); sessionStorage.clear(); window.location.href = "/"; }
-              }} className="hover:text-white transition-colors">Cerrar sesión</button>
-            ) : (
-              <button onClick={() => openSignIn({ fallbackRedirectUrl: "/dashboard" })} className="hover:text-white transition-colors">Iniciar sesión</button>
-            )}
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <p className="text-primary text-sm uppercase tracking-wider font-medium mb-3 opacity-90">Dashboard en tiempo real</p>
+              <h2 className="text-3xl font-bold tracking-tight text-primary mb-4">Ve cada centavo recuperado</h2>
+              <p className="text-muted leading-relaxed mb-6">Sin porcentajes ocultos. Sin reportes vagos. Tu dashboard muestra exactamente cuánto AlyntAI te devolvió, tu tasa de recuperación y el ROI neto tras nuestro modesto costo.</p>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-muted">Tasa de recuperación, fallos y ROI neto en tiempo real.</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-muted">Estado por pago individualizado de todos los cobros.</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-muted">Insights generados por inteligencia artificial visuales.</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="rounded-xl border border-soft bg-card-alt overflow-hidden shadow-2xl hover-lift shadow-black/80">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-soft">
+                <div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-white/20"></div><div className="w-2.5 h-2.5 rounded-full bg-white/20"></div><div className="w-2.5 h-2.5 rounded-full bg-white/20"></div></div>
+                <div className="flex-1 flex justify-center"><div className="bg-white/5 rounded px-3 py-0.5 text-[10px] text-muted font-mono">app.alyntai.com/dashboard</div></div>
+                <div className="w-12"></div>
+              </div>
+              <div className="p-5 space-y-4">
+                <div className="rounded-lg p-4 border border-soft bg-card flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium flex items-center gap-1.5"><span className="text-success tracking-wide">Recuperado $4,520</span></p>
+                    <p className="text-[10px] text-muted/60 mt-0.5">Costo fjo $9.99 — ROI Neto: $+4,510</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-mono text-xl font-semibold tabular-nums text-success">46%</p>
+                    <p className="text-[10px] text-muted/60">Tasa recup.</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-4 gap-px bg-white/5 rounded-lg overflow-hidden border border-soft">
+                  <div className="bg-card p-3.5"><p className="text-[10px] text-muted/60 mb-1">Recup</p><p className="font-mono text-sm font-semibold tabular-nums text-success">$4k</p></div>
+                  <div className="bg-card p-3.5"><p className="text-[10px] text-muted/60 mb-1">Fallos</p><p className="font-mono text-sm font-semibold tabular-nums text-loss">$9k</p></div>
+                  <div className="bg-card p-3.5"><p className="text-[10px] text-muted/60 mb-1">Tasa</p><p className="font-mono text-sm font-semibold tabular-nums text-primary">46%</p></div>
+                  <div className="bg-card p-3.5"><p className="text-[10px] text-muted/60 mb-1">Neto</p><p className="font-mono text-sm font-semibold tabular-nums text-success">$4k</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-card-alt py-20 border-y border-soft">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            
+            <div className="order-2 md:order-1">
+              <div className="rounded-xl border border-soft bg-card shadow-lg shadow-black/80 hover-lift overflow-hidden max-w-md mx-auto">
+                <div className="px-5 py-3 border-b border-soft bg-black/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">IA</div>
+                    <div><p className="text-xs font-medium text-primary">AlyntAI Recovery</p><p className="text-[10px] text-muted">billing@tu-saas.com</p></div>
+                  </div>
+                  <p className="text-xs font-medium text-primary">Acción rápida para tu suscripción de ACME</p>
+                </div>
+                <div className="px-5 py-4 space-y-3">
+                  <p className="text-xs text-muted leading-relaxed">Hola Sarah,</p>
+                  <p className="text-xs text-muted leading-relaxed">Notamos que tu pago por <span className="font-medium text-primary">$89.00</span> para el plan Pro no se completó. Esto ocurre a menudo cuando un banco bloquea un cobro de tarjeta por límite o expiración.</p>
+                  <p className="text-xs text-muted leading-relaxed">Para que no pierdas el acceso de tu cuenta de forma abrupta, solo usa el botón seguro debajo para emitir un nuevo intento.</p>
+                  <div className="pt-1"><div className="inline-flex items-center justify-center bg-primary text-black px-5 py-2 rounded-md text-xs font-medium">Actualizar Método de Pago</div></div>
+                </div>
+                <div className="px-5 py-2.5 border-t border-soft bg-black/20">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-subtle"></div>
+                    <p className="text-[10px] text-muted/70">Contexto IA — generado a partir de motivo de declive</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 md:order-2">
+              <p className="text-primary text-sm uppercase tracking-wider font-medium mb-3 opacity-90">Emails IA</p>
+              <h2 className="text-3xl font-bold tracking-tight text-primary mb-4">Cero plantillas. Sólo respuestas directas.</h2>
+              <p className="text-muted leading-relaxed mb-6">Un email genérico es un ticket a tu papelera. AlyntAI redacta cada punto en base a métricas contextuales, creando sentido de urgencia natural y empático.</p>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-muted">Secuencias de urgencia con 3 correos integrales</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-muted">Aviso amigable, Recordatorio, y Expiración</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span className="text-sm text-muted">Sincronización instantánea con webhook al cobrar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20" id="pricing">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <p className="text-muted text-sm uppercase tracking-wider font-medium mb-3">Los Precios</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-primary mb-3">Ellos muerden tu ganancia.<br/>Nosotros cobramos al ras.</h2>
+            <p className="text-muted text-sm max-w-lg mx-auto leading-relaxed">Otros exigen del 15% al 30% del volumen recuperado por encima de rentas exorbitantes. Alynt AI cobra una de dos tarifas planas. Absolutamente todo el capital retorna a tu flujo de caja de SaaS.</p>
+          </div>
+          
+          <div className="rounded-xl border border-soft bg-card overflow-hidden shadow-xl hover-lift">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-soft bg-black/40">
+                    <th className="text-left py-4 px-6 text-muted text-xs font-medium uppercase tracking-wider w-[200px]">El Enfoque</th>
+                    <th className="text-center py-4 px-6 text-xs font-semibold uppercase tracking-wider text-black bg-primary min-w-[130px]">AlyntAI</th>
+                    <th className="text-center py-4 px-6 text-muted text-xs font-medium uppercase tracking-wider min-w-[130px]">El Resto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted">Modelo a Facturar</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-primary font-semibold">$9.99/mes plano</span></td>
+                    <td className="py-4 px-6 text-center text-muted/80">$250/m + 20%</td>
+                  </tr>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted">Tiempo de Setup</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-primary font-semibold">Instante</span></td>
+                    <td className="py-4 px-6 text-center text-muted/80">Llamada Demo</td>
+                  </tr>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted">Emails por IA</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-primary">Incluido</span></td>
+                    <td className="py-4 px-6 text-center text-muted/80">Básico Plantillas</td>
+                  </tr>
+                  <tr className="border-b border-soft hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted">Transparencia ROI</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-primary font-semibold">Tiempo Real</span></td>
+                    <td className="py-4 px-6 text-center text-muted/80">Oculto (%)</td>
+                  </tr>
+                  <tr className="hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 text-muted font-medium">Tú conservas ($1,000 recp.)</td>
+                    <td className="py-4 px-6 text-center bg-primary/5 font-medium"><span className="text-success font-bold text-lg tabular-nums tracking-wide">$990</span></td>
+                    <td className="py-4 px-6 text-center text-loss font-bold tabular-nums tracking-wide">$550</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="relative rounded-2xl bg-black border border-soft text-primary overflow-hidden shadow-2xl hover-lift">
+            <div className="absolute inset-0 bg-dot-grid opacity-20 pointer-events-none"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[250px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+            <div className="relative px-8 py-16 md:px-16 md:py-20 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">¿Sangrando capital SaaS?<br/><span className="text-primary/70">Calcula y córtalo hoy.</span></h2>
+              <p className="text-muted mb-8 max-w-md mx-auto text-sm leading-relaxed">Con recuperar un pago fallido ya doblaste la inversión original. Desbloquea un flujo de caja vital.</p>
+              <Link href="/sign-up" className="inline-flex items-center justify-center whitespace-nowrap font-medium h-11 rounded-md gap-2 bg-primary hover:opacity-90 text-[black] border-0 cta-glow text-sm px-8 transition-all">
+                Pruébalo Gratis
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </Link>
+              <p className="text-[11px] text-muted/40 mt-5">Conexión limpia · Empieza hoy mismo · Cancela cuando quieras</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-soft bg-card-alt">
+        <div className="max-w-5xl mx-auto px-6 py-10">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold tracking-tight text-primary">AlyntAI</span>
+            </div>
+            <div className="flex items-center gap-6 text-xs text-muted">
+              <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
+              <Link href="/privacy" className="hover:text-primary transition-colors">Privacidad</Link>
+              <Link href="/terms" className="hover:text-primary transition-colors">Términos</Link>
+              <a href="mailto:soporte@alyntai.com" className="hover:text-primary transition-colors">Soporte</a>
+            </div>
+            <p className="text-xs text-muted/50">© {new Date().getFullYear()} Alynt AI</p>
           </div>
         </div>
       </footer>
     </div>
-  );
-}
-
-export default function LandingPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#0F1B27] flex items-center justify-center">
-        <span className="w-8 h-8 border-4 border-[#F2F2F2]/20 border-t-[#F2F2F2] rounded-full animate-spin" />
-      </div>
-    }>
-      <LandingPageContent />
-    </Suspense>
   );
 }
