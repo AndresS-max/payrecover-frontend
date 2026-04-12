@@ -4,19 +4,11 @@ import { ArrowRight, Check } from 'lucide-react';
 export default function Home() {
   return (
     <div className="min-h-screen bg-deep relative">
-      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
-        <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-14">
+      <nav className="fixed top-4 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+        <div className="w-full flex items-center justify-between px-8 md:px-12 h-14">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-xl font-bold tracking-tight transition-colors text-primary">AlyntAI</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Link href="/sign-in" className="text-sm transition-colors px-3 py-1.5 rounded-md font-medium text-muted hover:text-primary">
-              Log in
-            </Link>
-            <Link href="/sign-up" className="text-sm px-4 py-1.5 rounded-md font-medium transition-all bg-primary text-black hover:bg-primary/90">
-              Start free trial
-            </Link>
-          </div>
         </div>
       </nav>
 
@@ -24,15 +16,11 @@ export default function Home() {
         <div className="absolute inset-0 bg-dot-grid mask-radial pointer-events-none opacity-30"></div>
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-primary/[0.02] rounded-full blur-[120px] pointer-events-none"></div>
         <div className="relative max-w-3xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-soft px-4 py-1.5 text-xs font-medium mb-8 bg-card/[0.5] text-primary hover-lift">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse-subtle"></span>
-            $9.99/mo flat — no el 30% de lo que recuperamos
-          </div>
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-[-0.04em] leading-[1.05] mb-6 text-primary">
-            Tu herramienta de dunning<br/>cobra comisión. Nosotros no.
+            Detén la fuga de ingresos<br/>por tarjetas rechazadas.
           </h1>
           <p className="text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed text-muted">
-            Recuperación de pagos con IA para SaaS. Reintentos inteligentes, emails personalizados, dashboard ROI en tiempo real. Conecta Stripe en 2 minutos.
+            AlyntAI gestiona y reactiva automáticamente las suscripciones fallidas en Stripe combinando reintentos estratégicos y comunicación generada por IA.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/sign-up" className="inline-flex items-center justify-center whitespace-nowrap font-medium h-11 rounded-md gap-2 bg-primary hover:opacity-90 text-[black] border-0 cta-glow text-sm px-6 transition-all">
