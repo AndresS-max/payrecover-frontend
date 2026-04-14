@@ -43,7 +43,8 @@ export default async function RecuperacionesPage() {
   const userEmail = user?.emailAddresses?.[0]?.emailAddress;
   const stripeAccountId = userEmail ? await getUserStripeAccountId(userEmail) : null;
 
-  let recuperaciones: Record<string, unknown>[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let recuperaciones: Record<string, any>[] = [];
   if (stripeAccountId) {
     const { data: pagos, error } = await supabaseServer
       .from("failed_invoices")
