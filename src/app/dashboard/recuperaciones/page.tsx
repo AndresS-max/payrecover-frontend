@@ -1,4 +1,6 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseServer } from "@/lib/supabaseServer";
+import { currentUser } from "@clerk/nextjs/server";
+import { getUserStripeAccountId } from "@/lib/getUserAccount";
 import Link from "next/link";
 
 // Formatea centavos a moneda legible: 10050 → "$100.50"
@@ -37,12 +39,19 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default async function RecuperacionesPage() {
-  const { data: pagos, error } = await supabase
-    .from("failed_invoices")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const user = await currentUser();
+  const userEmail = user?.emailAddresses?.[0]?.emailAddress;
+  const stripeAccountId = userEmail ? await getUserStripeAccountId(userEmail) : null;
 
-  const recuperaciones = error || !pagos ? [] : pagos;
+  let recuperaciones: Record<string, unknown>[] = [];
+  if (stripeAccountId) {
+    const { data: pagos, error } = await supabaseServer
+      .from("failed_invoices")
+      .select("*")
+      .eq("stripe_account_id", stripeAccountId)
+      .order("created_at", { ascending: false });
+    recuperaciones = error || !pagos ? [] : pagos;
+  }
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">

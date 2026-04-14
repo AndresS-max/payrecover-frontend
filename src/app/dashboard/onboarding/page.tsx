@@ -1,20 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useUser, useSession } from "@clerk/nextjs";
 
 export default function OnboardingPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
+  const { session } = useSession();
 
   const handleConnectStripe = async () => {
     setIsLoading(true);
 
     try {
+      const token = await session?.getToken();
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/connect`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ email: user?.primaryEmailAddress?.emailAddress }),
       });

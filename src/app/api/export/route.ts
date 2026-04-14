@@ -1,22 +1,31 @@
-import { supabase } from '@/lib/supabase';
+import { supabaseServer } from '@/lib/supabaseServer';
+import { getUserStripeAccountId } from '@/lib/getUserAccount';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 
 export async function GET() {
   // ── Authentication check ─────────────────────────────────────────────────
-  // This route is NOT covered by middleware.ts (which only guards /dashboard/*)
-  // So we must check auth manually here.
   const { userId } = await auth();
   if (!userId) {
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
-  // ── Query Supabase ────────────────────────────────────────────────────────
-  const { data, error } = await supabase
+  // ── Get user's stripe account for data isolation ──────────────────────────
+  const user = await currentUser();
+  const userEmail = user?.emailAddresses?.[0]?.emailAddress;
+  const stripeAccountId = userEmail ? await getUserStripeAccountId(userEmail) : null;
+
+  if (!stripeAccountId) {
+    return NextResponse.json({ error: 'No tienes una cuenta de Stripe conectada' }, { status: 403 });
+  }
+
+  // ── Query Supabase (filtered by user's account) ───────────────────────────
+  const { data, error } = await supabaseServer
     .from('failed_invoices')
     .select(
       'id, stripe_invoice_id, stripe_customer_id, stripe_account_id, amount_due, amount_paid, commission_amount, currency, status, created_at, recovered_at, commission_billed, commission_billed_at'
     )
+    .eq('stripe_account_id', stripeAccountId)
     .order('created_at', { ascending: false });
 
   if (error) {

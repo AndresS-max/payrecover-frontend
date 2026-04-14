@@ -1,8 +1,8 @@
-import { supabase } from "./supabase";
+import { supabaseServer } from "./supabaseServer";
 
 export async function getUserPlan(clerkUserId: string) {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseServer
       .from("subscriptions")
       .select("status, stripe_price_id")
       .eq("clerk_user_id", clerkUserId)

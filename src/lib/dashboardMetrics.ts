@@ -1,13 +1,13 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseServer } from "@/lib/supabaseServer";
 
-export async function getProDashboardMetrics() {
-  // En paralelo para máximo rendimiento
+export async function getProDashboardMetrics(stripeAccountId: string) {
+  // En paralelo para máximo rendimiento, filtrado por cuenta del usuario
   const [
     { data: pendingInvoices, error: pendingErr },
     { data: recoveredInvoices, error: recErr }
   ] = await Promise.all([
-    supabase.from("failed_invoices").select("amount_due").eq("status", "pending"),
-    supabase.from("failed_invoices").select("amount_paid").eq("status", "recovered"),
+    supabaseServer.from("failed_invoices").select("amount_due").eq("status", "pending").eq("stripe_account_id", stripeAccountId),
+    supabaseServer.from("failed_invoices").select("amount_paid").eq("status", "recovered").eq("stripe_account_id", stripeAccountId),
   ]);
 
   if (pendingErr) console.error("Error fetching pending invoices:", pendingErr);

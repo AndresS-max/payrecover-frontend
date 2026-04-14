@@ -2,8 +2,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { getProDashboardMetrics } from "@/lib/dashboardMetrics";
 import { ProDashboardMetrics } from "@/components/ProDashboardMetrics";
-
 import { getUserPlan } from "@/lib/subscriptions";
+import { getUserStripeAccountId } from "@/lib/getUserAccount";
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -15,7 +15,11 @@ export default async function DashboardPage() {
   // Consulta real a Supabase para determinar el plan del usuario
   const { isPro } = await getUserPlan(user.id);
 
-  const metrics = isPro ? await getProDashboardMetrics() : null;
+  // Obtener el stripe_account_id del usuario para filtrar datos
+  const userEmail = user.emailAddresses?.[0]?.emailAddress;
+  const stripeAccountId = userEmail ? await getUserStripeAccountId(userEmail) : null;
+
+  const metrics = isPro && stripeAccountId ? await getProDashboardMetrics(stripeAccountId) : null;
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useUser, useClerk } from "@clerk/nextjs";
+import { useUser, useClerk, useSession } from "@clerk/nextjs";
 import { Check, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 
@@ -45,6 +45,7 @@ const PLANS = [
 export default function PricingPage() {
   const { isLoaded, isSignedIn, user } = useUser();
   const { openSignIn } = useClerk();
+  const { session } = useSession();
   const [loadingPriceId, setLoadingPriceId] = useState<string | null>(null);
 
   const handleSubscription = async (priceId: string) => {
@@ -56,10 +57,14 @@ export default function PricingPage() {
     try {
       setLoadingPriceId(priceId);
       const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-      
+      const token = await session?.getToken();
+
       const response = await fetch(`${backendUrl}/api/checkout`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
         body: JSON.stringify({
           priceId,
           clerk_user_id: user.id,
